@@ -13,6 +13,7 @@ public interface CidadeMapper {
     CidadeMapper INSTANCE = Mappers.getMapper(CidadeMapper.class);
 
     // Mapeamento de Cidade para CidadeJpaEntity
+    @Mapping(target = "id", expression = "java(cidade.id().value() )")
     CidadeJpaEntity cidadeToCidadeJpaEntity(Cidade cidade);
 
     // Mapeamento de CidadeJpaEntity para Cidade

@@ -16,7 +16,7 @@ public class DefaultUpdateCidade extends UpdateCidadeUseCase {
     @Override
     public Output execute(Input input) {
         final var aCidade = this.cidadeGateway.cidadeOfId(new CidadeId(input.cidadeId()))
-                .orElseThrow(() -> DomainException.with("Cidade com id %s não pdoe ser encontrado".formatted(input.cidadeId())));
+                .orElseThrow(() -> DomainException.with("Cidade com id %s não pode ser encontrado".formatted(input.cidadeId())));
 
         aCidade.setUf(input.uf());
         aCidade.setNome(input.nome());

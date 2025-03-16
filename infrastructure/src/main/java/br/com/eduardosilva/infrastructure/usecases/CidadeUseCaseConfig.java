@@ -1,7 +1,11 @@
 package br.com.eduardosilva.infrastructure.usecases;
 
+import br.com.eduardosilva.application.cidade.BuscaCidadePaginadoUseCase;
 import br.com.eduardosilva.application.cidade.CreateCidadeUseCase;
+import br.com.eduardosilva.application.cidade.UpdateCidadeUseCase;
+import br.com.eduardosilva.application.cidade.impl.DefaultBuscaCidadePaginadoUseCase;
 import br.com.eduardosilva.application.cidade.impl.DefaultCreateCidade;
+import br.com.eduardosilva.application.cidade.impl.DefaultUpdateCidade;
 import br.com.eduardosilva.domain.cidade.CidadeGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,5 +22,15 @@ public class CidadeUseCaseConfig {
     @Bean
     public CreateCidadeUseCase createCidadeUseCase(){
         return new DefaultCreateCidade(cidadeGateway);
+    }
+
+    @Bean
+    public UpdateCidadeUseCase updateCidadeUseCase(){
+        return new DefaultUpdateCidade(cidadeGateway);
+    }
+
+    @Bean
+    public BuscaCidadePaginadoUseCase buscaCidadePaginadoUseCase(){
+        return new DefaultBuscaCidadePaginadoUseCase((cidadeGateway));
     }
 }

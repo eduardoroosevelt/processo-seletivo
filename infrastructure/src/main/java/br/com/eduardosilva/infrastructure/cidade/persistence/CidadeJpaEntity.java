@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class CidadeJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "cidade_seq")
+    @SequenceGenerator( name = "cidade_seq", sequenceName = "cidade_cid_id_seq", allocationSize = 1)
     @Column(name = "cid_id")
     private Long id;
 
