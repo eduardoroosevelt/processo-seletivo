@@ -1,0 +1,48 @@
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    tty: true
+    volumes:
+      - ./Docker-Compose/PostgreSQL:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: pg_isready
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=seletivo
+    networks:
+      - mynetwork
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: admin123
+      MINIO_ROOT_PASSWORD: strongpassword123
+      MINIO_ACCESS_KEY: access_keyteste1232  # Chave de acesso
+      MINIO_SECRET_KEY: sectre_keyteste1232  # Chave secreta
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command:  minio server /data --console-address ':9001' &&  mc admin user add my myminioacc myusersecr
+    restart: always
+    networks:
+      - mynetwork
+
+volumes:
+  minio_data:
+    driver: local
+
+networks:
+  mynetwork:
+    driver: bridge
