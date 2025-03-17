@@ -3,6 +3,7 @@ package br.com.eduardosilva.infrastructure.api;
 import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.cidade.Cidade;
 import br.com.eduardosilva.domain.cidade.CidadePreview;
+import br.com.eduardosilva.infrastructure.cidade.models.CidadeResponse;
 import br.com.eduardosilva.infrastructure.cidade.models.CreateCidadeRequest;
 import br.com.eduardosilva.infrastructure.cidade.models.UpdateCidadeRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,4 +58,16 @@ public interface CidadeAPI {
             @RequestParam(name = "uf", required = false, defaultValue = "") String uf,
             @RequestParam(name = "nome", required = false, defaultValue = "") String nome
     );
+
+    @GetMapping(
+            value = "{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Get a cidade by it's identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cidade retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Cidade was not found"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    CidadeResponse getById(@PathVariable(name = "id") Long id);
 }

@@ -1,9 +1,11 @@
 package br.com.eduardosilva.infrastructure.usecases;
 
 import br.com.eduardosilva.application.cidade.BuscaCidadePaginadoUseCase;
+import br.com.eduardosilva.application.cidade.BuscarCidadePorIdUseCase;
 import br.com.eduardosilva.application.cidade.CreateCidadeUseCase;
 import br.com.eduardosilva.application.cidade.UpdateCidadeUseCase;
 import br.com.eduardosilva.application.cidade.impl.DefaultBuscaCidadePaginadoUseCase;
+import br.com.eduardosilva.application.cidade.impl.DefaultBuscarCidadePorIdUseCase;
 import br.com.eduardosilva.application.cidade.impl.DefaultCreateCidade;
 import br.com.eduardosilva.application.cidade.impl.DefaultUpdateCidade;
 import br.com.eduardosilva.domain.cidade.CidadeGateway;
@@ -32,5 +34,10 @@ public class CidadeUseCaseConfig {
     @Bean
     public BuscaCidadePaginadoUseCase buscaCidadePaginadoUseCase(){
         return new DefaultBuscaCidadePaginadoUseCase((cidadeGateway));
+    }
+
+    @Bean
+    public BuscarCidadePorIdUseCase buscarCidadePorIdUseCase(){
+        return new DefaultBuscarCidadePorIdUseCase(cidadeGateway);
     }
 }
