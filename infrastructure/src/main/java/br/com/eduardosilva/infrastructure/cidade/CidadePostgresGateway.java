@@ -7,7 +7,6 @@ import br.com.eduardosilva.infrastructure.cidade.persistence.CidadeRepository;
 import br.com.eduardosilva.infrastructure.mapper.CidadeMapper;
 import br.com.eduardosilva.infrastructure.util.SqlUtils;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -51,8 +50,8 @@ public class CidadePostgresGateway implements CidadeGateway {
         );
 
         final var actualPage = this.cidadeRepository.findAll(
-                SqlUtils.like(SqlUtils.upper(search.nome())),
-                SqlUtils.like(SqlUtils.upper(search.uf())),
+                SqlUtils.upper(search.nome()),
+                SqlUtils.upper(search.uf()),
                 page);
 
         return new Pagination<>(

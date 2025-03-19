@@ -66,7 +66,7 @@ public class EnderecoController implements EnderecoAPI {
 
     @Override
     public Pagination<EnderecoPreview> list(int page, int perPage, String endTipoLogradouro, String endLogradouro, Integer endNumero, String endBairro, Long cidadeId) {
-        final var aCidadeId = cidadeId != null ?new CidadeId(cidadeId) : CidadeId.empty();
+        final var aCidadeId = cidadeId != null ? new CidadeId(cidadeId) : CidadeId.empty();
         final var parm = new EnderecoSearchQuery(page,perPage,endTipoLogradouro,  endLogradouro,  endNumero,  endBairro, aCidadeId);
         return buscarEnderecoPaginadoUseCase.execute(parm);
     }

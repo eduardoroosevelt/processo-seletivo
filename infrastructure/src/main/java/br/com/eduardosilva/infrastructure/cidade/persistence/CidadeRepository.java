@@ -17,9 +17,9 @@ public interface CidadeRepository extends JpaRepository<CidadeJpaEntity,Long> {
                 ) 
             from CidadeJpaEntity c
             where
-               :nome is null or UPPER(c.nome) like :nome 
+               :nome is null or UPPER(c.nome) like  concat('%', :nome  , '%')
             and
-               :uf is null or UPPER(c.uf) like :uf 
+               :uf is null or UPPER(c.uf) like  concat('%', :uf   , '%')
             """)
     Page<CidadePreview> findAll(String nome, String uf, Pageable page);
 }

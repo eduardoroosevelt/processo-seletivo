@@ -22,7 +22,7 @@ public class DefaultUpdateEndereco extends UpdateEnderecoUseCase {
     public Output execute(Input input) {
 
         final var aEndereco = this.enderecoGateway.enderecoOfId(new EnderecoID(input.enderecoId()))
-                .orElseThrow(() -> DomainException.with("Endereco com id %s não pode ser encontrado".formatted(input.cidadeId())));
+                .orElseThrow(() -> DomainException.with("Endereco com id %s não pode ser encontrado".formatted(input.enderecoId())));
 
         final var aCidade = this.cidadeGateway.cidadeOfId(new CidadeId(input.cidadeId()))
                 .orElseThrow(() -> DomainException.with("Cidade com id %s não pode ser encontrado".formatted(input.cidadeId())));

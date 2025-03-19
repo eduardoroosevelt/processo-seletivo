@@ -3,20 +3,18 @@ package br.com.eduardosilva.infrastructure.unidade.persistence;
 import br.com.eduardosilva.infrastructure.endereco.persistence.EnderecoJpaEntity;
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "unidade_endereco")
 @Table(name = "unidade_endereco")
-@IdClass(UnidadeEnderecoJpaEntityId.class)
 public class UnidadeEnderecoJpaEntity {
 
-    @Id
-    @ManyToOne
+    @EmbeddedId
+    private UnidadeEnderecoJpaEntityId id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("unidade")
     @JoinColumn(name = "unid_id")
     private UnidadeJpaEntity unidade;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "end_id")
-    private EnderecoJpaEntity endereco;
 
     public UnidadeJpaEntity getUnidade() {
         return unidade;
@@ -26,11 +24,11 @@ public class UnidadeEnderecoJpaEntity {
         this.unidade = unidade;
     }
 
-    public EnderecoJpaEntity getEndereco() {
-        return endereco;
+    public UnidadeEnderecoJpaEntityId getId() {
+        return id;
     }
 
-    public void setEndereco(EnderecoJpaEntity endereco) {
-        this.endereco = endereco;
+    public void setId(UnidadeEnderecoJpaEntityId id) {
+        this.id = id;
     }
 }

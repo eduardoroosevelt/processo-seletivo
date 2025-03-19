@@ -1,9 +1,18 @@
 package br.com.eduardosilva.infrastructure.unidade.persistence;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class UnidadeEnderecoJpaEntityId {
+@Embeddable
+public class UnidadeEnderecoJpaEntityId implements Serializable {
+
+    @Column(name = "unid_id", nullable = false)
     private Long unidade;
+
+    @Column(name = "end_id", nullable = false)
     private Long endereco;
 
     public Long getendereco() {

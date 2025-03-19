@@ -9,7 +9,9 @@ import br.com.eduardosilva.infrastructure.util.SqlUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Component
 public class EnderecoPostgresGateway implements EnderecoGateway {
@@ -38,7 +40,7 @@ public class EnderecoPostgresGateway implements EnderecoGateway {
     @Override
     public Optional<Endereco> enderecoOfId(EnderecoID anId) {
         return enderecoRepository.findById(anId.value())
-                .map((op)->EnderecoMapper.INSTANCE.enderecoJpaEntityToendereco(op));
+                .map(EnderecoMapper.INSTANCE::enderecoJpaEntityToendereco);
     }
 
     @Override
@@ -49,9 +51,9 @@ public class EnderecoPostgresGateway implements EnderecoGateway {
         );
 
         final var actualPage = this.enderecoRepository.findAll(
-                SqlUtils.like(SqlUtils.upper(search.endBairro())),
-                SqlUtils.like(SqlUtils.upper(search.endLogradouro())),
-                SqlUtils.like(SqlUtils.upper(search.endTipoLogradouro())),
+                SqlUtils.upper(search.endBairro()),
+                SqlUtils.upper(search.endLogradouro()),
+                SqlUtils.upper(search.endTipoLogradouro()),
                 search.endNumero(),
                 search.cidadeId().value(),
                 page);
@@ -62,5 +64,17 @@ public class EnderecoPostgresGateway implements EnderecoGateway {
                 actualPage.getTotalElements(),
                 actualPage.toList()
         );
+    }
+
+    @Override
+    public List<EnderecoID> existsByIds(Iterable<EnderecoID> enderecoIDS) {
+        final var ids = StreamSupport.stream(enderecoIDS.spliterator(), false)
+                .map(EnderecoID::value)
+                .toList();
+
+        return this.enderecoRepository.existsByIds(ids).stream()
+                .map(EnderecoID::new)
+                .toList();
+
     }
 }
