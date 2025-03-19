@@ -1,9 +1,8 @@
 package br.com.eduardosilva.infrastructure.cidade.persistence;
 
-import br.com.eduardosilva.domain.cidade.Cidade;
 import br.com.eduardosilva.domain.cidade.CidadePreview;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,5 +21,5 @@ public interface CidadeRepository extends JpaRepository<CidadeJpaEntity,Long> {
             and
                :uf is null or UPPER(c.uf) like :uf 
             """)
-    Page<CidadePreview> findAll(String nome, String uf, PageRequest page);
+    Page<CidadePreview> findAll(String nome, String uf, Pageable page);
 }

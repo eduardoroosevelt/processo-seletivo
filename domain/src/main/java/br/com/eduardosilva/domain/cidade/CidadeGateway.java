@@ -9,4 +9,5 @@ public interface CidadeGateway {
     Cidade save(Cidade cidade);
     Optional<Cidade> cidadeOfId(final CidadeId anId);
     Pagination<CidadePreview> findAll(CidadeSearchQuery search);
+
 }
