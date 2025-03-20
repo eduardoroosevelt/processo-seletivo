@@ -10,7 +10,8 @@ import java.time.LocalDate;
 public class PessoaJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "pessoa_pes_id_seq")
+    @SequenceGenerator( name = "pessoa_pes_id_seq", sequenceName = "pessoa_pes_id_seq", allocationSize = 1)
     @Column(name = "pes_id")
     private Long pesId;
 
@@ -28,6 +29,9 @@ public class PessoaJpaEntity {
 
     @Column(name = "pes_pai", length = 200, nullable = false)
     private String pesPai;
+
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    private ServidorEfetivoJpaEntity servidorEfetivoJpaEntity;
 
     public Long getPesId() {
         return pesId;
@@ -75,5 +79,13 @@ public class PessoaJpaEntity {
 
     public void setPesPai(String pesPai) {
         this.pesPai = pesPai;
+    }
+
+    public ServidorEfetivoJpaEntity getServidorEfetivoJpaEntity() {
+        return servidorEfetivoJpaEntity;
+    }
+
+    public void setServidorEfetivoJpaEntity(ServidorEfetivoJpaEntity servidorEfetivoJpaEntity) {
+        this.servidorEfetivoJpaEntity = servidorEfetivoJpaEntity;
     }
 }

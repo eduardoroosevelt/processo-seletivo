@@ -7,12 +7,13 @@ import jakarta.persistence.*;
 public class ServidorEfetivoJpaEntity {
 
     @Id
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "pes_id")
+    @MapsId
     private PessoaJpaEntity pessoa;
 
-    @Column(name = "st_matricula")
-    private String stMatricula;
+    @Column(name = "se_matricula")
+    private String matricula;
 
     public PessoaJpaEntity getPessoa() {
         return pessoa;
@@ -22,11 +23,11 @@ public class ServidorEfetivoJpaEntity {
         this.pessoa = pessoa;
     }
 
-    public String getStMatricula() {
-        return stMatricula;
+    public String getMatricula() {
+        return matricula;
     }
 
-    public void setStMatricula(String stMatricula) {
-        this.stMatricula = stMatricula;
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 }
