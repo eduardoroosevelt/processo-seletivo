@@ -1,8 +1,11 @@
 package br.com.eduardosilva.infrastructure.pessoa.persistence;
 
+import br.com.eduardosilva.domain.pessoa.PessoaFoto;
+import br.com.eduardosilva.infrastructure.unidade.persistence.UnidadeEnderecoJpaEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @Entity
@@ -32,6 +35,12 @@ public class PessoaJpaEntity {
 
     @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private ServidorEfetivoJpaEntity servidorEfetivoJpaEntity;
+
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PessoaEnderecoJpaEntity> enderecos;
+
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PessoaFotoJpaEntity> fotos;
 
     public Long getPesId() {
         return pesId;
@@ -87,5 +96,21 @@ public class PessoaJpaEntity {
 
     public void setServidorEfetivoJpaEntity(ServidorEfetivoJpaEntity servidorEfetivoJpaEntity) {
         this.servidorEfetivoJpaEntity = servidorEfetivoJpaEntity;
+    }
+
+    public Set<PessoaEnderecoJpaEntity> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(Set<PessoaEnderecoJpaEntity> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public Set<PessoaFotoJpaEntity> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(Set<PessoaFotoJpaEntity> fotos) {
+        this.fotos = fotos;
     }
 }

@@ -38,7 +38,7 @@ public class UnidadeController implements UnidadeAPI {
     public ResponseEntity<CreateUnidadeResponse> create(CreateUnidadeRequest input) {
         final var res= createUnidadeUseCase.execute(input,CreateUnidadeResponse::new);
 
-        return ResponseEntity.created(URI.create("/videos/"+res.videoId()))
+        return ResponseEntity.created(URI.create("/videos/"+res.unidadeId()))
                 .body(res);
     }
 

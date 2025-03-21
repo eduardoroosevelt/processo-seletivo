@@ -26,6 +26,26 @@ public class Pessoa extends Entity<PessoaId> {;
 
     private ServidorEfetivo servidorEfetivo;
 
+    private Set<PessoaFoto> fotos;
+
+
+//    public Pessoa(PessoaId pessoaId,
+//                  String pesNome,
+//                  LocalDate pesDataNascimento,
+//                  String pesSexo,
+//                  String pesMae,
+//                  String pesPai,
+//                  Set<EnderecoID> enderecos) {
+//
+//        super(pessoaId);
+//        setPesNome(pesNome);
+//        setPesDataNascimento(pesDataNascimento);
+//        setPesSexo(pesSexo);
+//        setPesMae(pesMae);
+//        setPesPai(pesPai);
+//        setEnderecos(enderecos);
+//    }
+
 
     public Pessoa(PessoaId pessoaId,
                   String pesNome,
@@ -33,7 +53,8 @@ public class Pessoa extends Entity<PessoaId> {;
                   String pesSexo,
                   String pesMae,
                   String pesPai,
-                  Set<EnderecoID> enderecos) {
+                  Set<EnderecoID> enderecos,
+                  Set<PessoaFoto> fotos) {
 
         super(pessoaId);
         setPesNome(pesNome);
@@ -42,6 +63,7 @@ public class Pessoa extends Entity<PessoaId> {;
         setPesMae(pesMae);
         setPesPai(pesPai);
         setEnderecos(enderecos);
+        setFotos(fotos);
     }
 
     public String getPesNome() {
@@ -111,6 +133,11 @@ public class Pessoa extends Entity<PessoaId> {;
         return this;
     }
 
+    public Pessoa updateFotos(Set<PessoaFoto> listPessoaFoto) {
+        setFotos(listPessoaFoto);
+        return this;
+    }
+
     public Pessoa updateServidorEfetivo(ServidorEfetivo servidorEfetivo){
         this.servidorEfetivo = servidorEfetivo;
         return this;
@@ -156,9 +183,35 @@ public class Pessoa extends Entity<PessoaId> {;
         }
     }
 
-    public void setEnderecos(Set<EnderecoID> enderecos) {
+    private void setEnderecos(Set<EnderecoID> enderecos) {
         this.enderecos = enderecos != null ? new HashSet<>(enderecos) : Collections.emptySet();
     }
 
+    public ServidorTemporario getServidorTemporario() {
+        return servidorTemporario;
+    }
 
+    private void setServidorTemporario(ServidorTemporario servidorTemporario) {
+        this.servidorTemporario = servidorTemporario;
+    }
+
+    public Set<PessoaFoto> getFotos() {
+        return fotos ;
+    }
+
+    private void setFotos(Set<PessoaFoto> fotos) {
+        this.fotos = fotos != null ? new HashSet<>(fotos) : Collections.emptySet();
+    }
+
+    public void append(PessoaFoto foto) {
+        if(fotos == null){
+            fotos = new HashSet<>();
+        }
+        fotos.add(foto);
+    }
+
+    public Pessoa updateEnderecos(Set<EnderecoID> endereco) {
+        setEnderecos(endereco);
+        return this;
+    }
 }

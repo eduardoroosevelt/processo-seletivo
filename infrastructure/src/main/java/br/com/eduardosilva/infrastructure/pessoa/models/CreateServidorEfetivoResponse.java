@@ -1,6 +1,6 @@
 package br.com.eduardosilva.infrastructure.pessoa.models;
 
-import br.com.eduardosilva.application.servidorEfetivo.CreateServidorEfetivoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 
 public record CreateServidorEfetivoResponse(Long id) {
 

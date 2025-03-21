@@ -6,6 +6,7 @@ import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.exceptions.NotFoundException;
 
 public class DefaultiBuscarEnderecoPorIdUseCase extends BuscarEnderecoPorIdUseCase {
 
@@ -22,7 +23,7 @@ public class DefaultiBuscarEnderecoPorIdUseCase extends BuscarEnderecoPorIdUseCa
         return this.enderecoGateway
                 .enderecoOfId(enderecoId)
                 .map(StdOutput::new)
-                .orElseThrow(()-> DomainException.with("Endereço não encontrado"));
+                .orElseThrow(()-> NotFoundException.with("Endereço não encontrado"));
        
     }
 

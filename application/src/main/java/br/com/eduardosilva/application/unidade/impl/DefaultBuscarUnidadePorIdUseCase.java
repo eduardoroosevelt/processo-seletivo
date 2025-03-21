@@ -4,6 +4,7 @@ import br.com.eduardosilva.application.unidade.BuscarUnidadePorIdUseCase;
 import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.exceptions.NotFoundException;
 import br.com.eduardosilva.domain.unidade.Unidade;
 import br.com.eduardosilva.domain.unidade.UnidadeGateway;
 import br.com.eduardosilva.domain.unidade.UnidadeId;
@@ -25,7 +26,7 @@ public class DefaultBuscarUnidadePorIdUseCase extends BuscarUnidadePorIdUseCase 
         return this.unidadeGateway
                 .unidadeOfId(unidadeId)
                 .map(StdOutput::new)
-                .orElseThrow(() -> DomainException.with("Unidade com id %s não pode ser encontrado".formatted(input.unidadeId())));
+                .orElseThrow(() -> NotFoundException.with("Unidade com id %s não pode ser encontrado".formatted(input.unidadeId())));
 
 
 

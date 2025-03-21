@@ -7,6 +7,8 @@ import br.com.eduardosilva.infrastructure.endereco.persistence.EnderecoJpaEntity
 import br.com.eduardosilva.infrastructure.mapper.EnderecoMapper;
 import br.com.eduardosilva.infrastructure.mapper.PessoaMapper;
 import br.com.eduardosilva.infrastructure.mapper.ServidorEfetivoMapper;
+import br.com.eduardosilva.infrastructure.mapper.UnidadeMapper;
+import br.com.eduardosilva.infrastructure.pessoa.persistence.PessoaFotoJpaEntity;
 import br.com.eduardosilva.infrastructure.pessoa.persistence.PessoaJpaEntity;
 import br.com.eduardosilva.infrastructure.pessoa.persistence.PessoaRepository;
 import br.com.eduardosilva.infrastructure.pessoa.persistence.ServidorEfetivoJpaEntity;
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class PessoaPostgresGateway implements PessoaGateway {
@@ -40,15 +44,37 @@ public class PessoaPostgresGateway implements PessoaGateway {
 
     @Override
     public Pessoa save(Pessoa pessoa) {
-        PessoaJpaEntity pessoaJpaEntity= PessoaMapper.INSTANCE.pessoaToPessoaJpaEntity(pessoa);
+        final PessoaJpaEntity pessoaJpaEntity= PessoaMapper.INSTANCE.pessoaToPessoaJpaEntity(pessoa);
 
         if (pessoa.getServidorEfetivo() != null) {
             ServidorEfetivoJpaEntity servidorEfetivoJpaEntity = ServidorEfetivoMapper.INSTANCE.servidorEfetivoToServidorEfetivoJpaEntity(pessoa.getServidorEfetivo());
-            servidorEfetivoJpaEntity.setPessoa(pessoaJpaEntity);  // Associa a Pessoa ao ServidorEfetivo
+            servidorEfetivoJpaEntity.setPessoa(pessoaJpaEntity);
             pessoaJpaEntity.setServidorEfetivoJpaEntity(servidorEfetivoJpaEntity);
         }
 
-        pessoaJpaEntity = this.pessoaRepository.save(pessoaJpaEntity);
-        return PessoaMapper.INSTANCE.pessoaJpaEntityToPessoa(pessoaJpaEntity);
+        if(pessoa.getFotos()!= null){
+           Set<PessoaFotoJpaEntity> listPf = pessoa.getFotos().stream().map(f ->{
+                PessoaFotoJpaEntity pf = new PessoaFotoJpaEntity();
+                pf.setFpData(f.getFpData());
+                pf.setFpBucket(f.getFpBucket());
+                pf.setFpHash(f.getFpHash());
+                pf.setPessoa(pessoaJpaEntity);
+                return pf;
+            }).collect(Collectors.toSet());
+
+            pessoaJpaEntity.setFotos(listPf);
+        }
+
+        PessoaJpaEntity pessoaJpaEntitySave = this.pessoaRepository.save(pessoaJpaEntity);
+        return PessoaMapper.INSTANCE.pessoaJpaEntityToPessoa(pessoaJpaEntitySave);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Pessoa> pessoaOfId(PessoaId anId) {
+        final var t = this.pessoaRepository.findById(anId.value());
+        return this.pessoaRepository.findById(anId.value())
+                .map(PessoaMapper.INSTANCE::pessoaJpaEntityToPessoa);
+    }
+
 }

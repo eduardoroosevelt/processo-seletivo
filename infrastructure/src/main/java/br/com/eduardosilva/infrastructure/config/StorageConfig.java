@@ -1,10 +1,12 @@
 package br.com.eduardosilva.infrastructure.config;
 
+import br.com.eduardosilva.infrastructure.config.properties.StorageProperties;
 import br.com.eduardosilva.infrastructure.service.StorageService;
 import br.com.eduardosilva.infrastructure.service.impl.MinIOStorageService;
 import io.minio.MinioClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,5 +39,11 @@ public class StorageConfig {
             final MinioClient storage
     ) {
         return new MinIOStorageService(bucketName, storage);
+    }
+
+    @Bean
+    @ConfigurationProperties(value = "storage.pessoa-foto")
+    public StorageProperties storageProperties() {
+        return new StorageProperties();
     }
 }

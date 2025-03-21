@@ -7,4 +7,5 @@ public interface PessoaGateway {
     PessoaId nextId();
     Optional<Pessoa> existePessoa(String nome, String paiNome, String maeNome, LocalDate dtNascimento);
     Pessoa save(Pessoa pessoa);
+    Optional<Pessoa> pessoaOfId(PessoaId pessoaId);
 }

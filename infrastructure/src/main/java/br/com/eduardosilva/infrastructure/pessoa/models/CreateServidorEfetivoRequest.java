@@ -1,6 +1,6 @@
 package br.com.eduardosilva.infrastructure.pessoa.models;
 
-import br.com.eduardosilva.application.servidorEfetivo.CreateServidorEfetivoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -14,4 +14,5 @@ public record CreateServidorEfetivoRequest(
         Set<Long> enderecos,
         String matricula
 ) implements CreateServidorEfetivoUseCase.Input {
+
 }

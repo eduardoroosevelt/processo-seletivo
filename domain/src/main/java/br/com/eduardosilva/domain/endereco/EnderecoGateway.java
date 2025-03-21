@@ -1,6 +1,7 @@
 package br.com.eduardosilva.domain.endereco;
 
 import br.com.eduardosilva.domain.Pagination;
+import br.com.eduardosilva.domain.pessoa.PessoaId;
 
 import java.util.List;
 import java.util.Optional;

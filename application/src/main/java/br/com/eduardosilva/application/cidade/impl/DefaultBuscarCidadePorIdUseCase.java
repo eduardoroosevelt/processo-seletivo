@@ -5,6 +5,7 @@ import br.com.eduardosilva.domain.cidade.Cidade;
 import br.com.eduardosilva.domain.cidade.CidadeGateway;
 import br.com.eduardosilva.domain.cidade.CidadeId;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.exceptions.NotFoundException;
 
 public class DefaultBuscarCidadePorIdUseCase extends BuscarCidadePorIdUseCase {
 
@@ -20,7 +21,7 @@ public class DefaultBuscarCidadePorIdUseCase extends BuscarCidadePorIdUseCase {
         return this.cidadeGateway
                 .cidadeOfId(aCidadeId)
                 .map(StdOut::new)
-                .orElseThrow(()-> DomainException.with("Cidade não encontrado"));
+                .orElseThrow(()-> NotFoundException.with("Cidade não encontrado"));
     }
 
     record StdOut(

@@ -11,6 +11,11 @@ public class ServidorEfetivo {
         return matricula;
     }
 
+    public ServidorEfetivo updateMatricula(String matricula){
+        setMatricula(matricula);
+        return this;
+    }
+
     private void setMatricula(String matricula) {
 
         if (matricula == null || matricula.isEmpty() ) {

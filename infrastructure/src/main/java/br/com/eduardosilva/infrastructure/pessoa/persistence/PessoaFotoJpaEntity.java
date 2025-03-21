@@ -6,10 +6,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "foto_pessoa")
-public class FotoJpaEntity {
+public class PessoaFotoJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "pessoa_pes_id_seq")
+    @SequenceGenerator( name = "pessoa_pes_id_seq", sequenceName = "pessoa_pes_id_seq", allocationSize = 1)
     @Column(name = "fp_id")
     private Long fpId;
 

@@ -65,6 +65,7 @@ public class CidadeController implements CidadeAPI {
             }
         };
 
-        return CidadeApiPresenter.present(buscarCidadePorIdUseCase.execute(aInput));
+        final var a=  CidadeApiPresenter.present(buscarCidadePorIdUseCase.execute(aInput));
+        return a;
     }
 }

@@ -5,7 +5,7 @@ import com.google.common.hash.Hashing;
 
 public final class HashingUtils {
 
-    private static final HashFunction CHECKSUM = Hashing.crc32c();
+    private static final HashFunction CHECKSUM = Hashing.md5();
 
     private HashingUtils() {}
 

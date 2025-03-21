@@ -1,4 +1,4 @@
-package br.com.eduardosilva.application.servidorEfetivo;
+package br.com.eduardosilva.application.pessoa.servidorEfetivo;
 
 import br.com.eduardosilva.application.UseCase;
 import br.com.eduardosilva.domain.pessoa.PessoaId;
@@ -13,9 +13,8 @@ public abstract class CreateServidorEfetivoUseCase extends UseCase<CreateServido
          String pesSexo();
          String pesMae();
          String pesPai();
-         Set<Long> enderecos();
          String matricula();
-
+         Set<Long> enderecos();
     }
 
     public interface Output{

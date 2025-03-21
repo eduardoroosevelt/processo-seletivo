@@ -3,19 +3,17 @@ package br.com.eduardosilva.infrastructure.pessoa.persistence;
 import br.com.eduardosilva.infrastructure.endereco.persistence.EnderecoJpaEntity;
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "pessoa_endereco")
 @Table(name = "pessoa_endereco")
 public class PessoaEnderecoJpaEntity {
 
-    @Id
-    @ManyToOne
+    @EmbeddedId
+    private PessoaEnderecoJpaEntityId id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("pessoa")
     @JoinColumn(name = "pes_id")
     private PessoaJpaEntity pessoa;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "end_id")
-    private EnderecoJpaEntity endereco;
 
     public PessoaJpaEntity getPessoa() {
         return pessoa;
@@ -25,11 +23,11 @@ public class PessoaEnderecoJpaEntity {
         this.pessoa = pessoa;
     }
 
-    public EnderecoJpaEntity getEndereco() {
-        return endereco;
+    public PessoaEnderecoJpaEntityId getId() {
+        return id;
     }
 
-    public void setEndereco(EnderecoJpaEntity endereco) {
-        this.endereco = endereco;
+    public void setId(PessoaEnderecoJpaEntityId id) {
+        this.id = id;
     }
 }

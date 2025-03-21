@@ -39,3 +39,8 @@ server:
   port: 8083
   servlet:
     context-path: /apiseletivo
+
+storage:
+  pessoa-foto:
+    location-pattern: pessoaId-{pessoaId}
+

@@ -9,6 +9,7 @@ import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.exceptions.NotFoundException;
 
 public class DefaultCreateEnderecoUseCase extends CreateEnderecoUseCase {
 
@@ -24,7 +25,7 @@ public class DefaultCreateEnderecoUseCase extends CreateEnderecoUseCase {
     @Override
     public Output execute(Input input) {
         Cidade cidade = this.cidadeGateway.cidadeOfId(new CidadeId(input.cidadeId()))
-                .orElseThrow(() -> DomainException.with("Cidade com id %s não pode ser encontrado".formatted(input.cidadeId())));
+                .orElseThrow(() -> NotFoundException.with("Cidade com id %s não pode ser encontrado".formatted(input.cidadeId())));
 
 
         Endereco endereco = new Endereco(
