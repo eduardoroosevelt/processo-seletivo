@@ -1,5 +1,6 @@
 package br.com.eduardosilva.infrastructure.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
@@ -9,12 +10,16 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class InMemoryUserConfig {
+    @Value("${seletivo.user.username}")
+    private String username;
+    @Value("${seletivo.user.password}")
+    private String password;
 
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
+                .username(username)
+                .password(password)
                 .roles("USER")
                 .build();
 

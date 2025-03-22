@@ -7,10 +7,12 @@ import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.exceptions.DomainException;
 import br.com.eduardosilva.domain.exceptions.NotFoundException;
+import br.com.eduardosilva.domain.pessoa.MediaResourceGateway;
 
 public class DefaultiBuscarEnderecoPorIdUseCase extends BuscarEnderecoPorIdUseCase {
 
     private final EnderecoGateway enderecoGateway;
+
 
     public DefaultiBuscarEnderecoPorIdUseCase(EnderecoGateway enderecoGateway) {
         this.enderecoGateway = enderecoGateway;

@@ -1,11 +1,17 @@
-package br.com.eduardosilva.infrastructure.usecases;
+package br.com.eduardosilva.infrastructure.config.usecases;
 
+import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.UploadFotoUseCase;
+import br.com.eduardosilva.application.pessoa.impl.DefaultBuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.impl.DefaultUploadFotoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.UpdateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultCreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultUpdateServidorEfetivoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultCreateServidorTemporarioUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultUpdateServidorTemporarioUseCase;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import br.com.eduardosilva.domain.pessoa.MediaResourceGateway;
 import br.com.eduardosilva.domain.pessoa.PessoaGateway;
@@ -37,5 +43,20 @@ public class PessoaUseCaseConfig {
     @Bean
     public UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase(){
         return new DefaultUpdateServidorEfetivoUseCase(pessoaGateway,enderecoGateway);
+    }
+
+    @Bean
+    public CreateServidorTemporarioUseCase createServidorTemporarioUseCase(){
+        return new DefaultCreateServidorTemporarioUseCase(pessoaGateway,enderecoGateway);
+    }
+
+    @Bean
+    public UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase(){
+        return new DefaultUpdateServidorTemporarioUseCase(pessoaGateway,enderecoGateway);
+    }
+
+    @Bean
+    public BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase(){
+        return new DefaultBuscarPessoaPorIdUseCase(pessoaGateway,mediaResourceGateway);
     }
 }

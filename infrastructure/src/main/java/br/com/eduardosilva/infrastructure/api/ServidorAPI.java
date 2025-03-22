@@ -1,8 +1,7 @@
 package br.com.eduardosilva.infrastructure.api;
 
-import br.com.eduardosilva.infrastructure.endereco.models.UpdateEnderecoRequest;
-import br.com.eduardosilva.infrastructure.pessoa.models.CreateServidorEfetivoRequest;
-import br.com.eduardosilva.infrastructure.pessoa.models.UpdateServidorEfetivoRequest;
+import br.com.eduardosilva.infrastructure.endereco.models.EnderecoResponse;
+import br.com.eduardosilva.infrastructure.pessoa.models.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @RequestMapping(value = "servidor")
 @Tag(name = "Servidor")
-public interface ServidorEfetivoAPI {
+public interface ServidorAPI {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
@@ -41,7 +40,7 @@ public interface ServidorEfetivoAPI {
             @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    ResponseEntity<?> createServidorTemporario(@RequestBody CreateServidorEfetivoRequest input);
+    ResponseEntity<?> createServidorTemporario(@RequestBody CreateServidorTemporarioRequest input);
 
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -71,4 +70,29 @@ public interface ServidorEfetivoAPI {
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     ResponseEntity<?> updateById(@PathVariable(name = "id") Long id, @RequestBody UpdateServidorEfetivoRequest input);
+
+    @PutMapping(
+            value = "temporario/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Update a Servidor efetivo by it's identifier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Servidor efetivo updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Servidor efetivo was not found"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    ResponseEntity<?> updateByTemporarioId(@PathVariable(name = "id") Long id, @RequestBody UpdateServidorTemporarioRequest input);
+
+    @GetMapping(
+            value = "{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Buscar uma Pessoa por id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pessoa retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Pessoa was not found"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    BuscarPessoaPorIdResponse getById(@PathVariable(name = "id") Long id);
 }

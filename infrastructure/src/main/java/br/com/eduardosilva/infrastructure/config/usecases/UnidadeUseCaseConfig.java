@@ -1,4 +1,4 @@
-package br.com.eduardosilva.infrastructure.usecases;
+package br.com.eduardosilva.infrastructure.config.usecases;
 
 import br.com.eduardosilva.application.unidade.BuscarUnidadePaginadoUseCase;
 import br.com.eduardosilva.application.unidade.BuscarUnidadePorIdUseCase;

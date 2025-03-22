@@ -64,6 +64,8 @@ public class Endereco  extends Entity<EnderecoID> {
     }
 
     private void setCidade(Cidade cidade) {
+        assertArgumentNotNull(cidade,"Cidade não pode ser vazio");
+
         this.cidade = cidade;
     }
 

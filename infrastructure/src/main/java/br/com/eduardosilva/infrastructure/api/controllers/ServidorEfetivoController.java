@@ -1,15 +1,18 @@
 package br.com.eduardosilva.infrastructure.api.controllers;
 
+import br.com.eduardosilva.application.endereco.BuscarEnderecoPorIdUseCase;
+import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.UploadFotoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.UpdateServidorEfetivoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
 import br.com.eduardosilva.domain.exceptions.DomainException;
 import br.com.eduardosilva.domain.shared.Resource;
-import br.com.eduardosilva.infrastructure.api.ServidorEfetivoAPI;
-import br.com.eduardosilva.infrastructure.pessoa.models.CreateServidorEfetivoRequest;
-import br.com.eduardosilva.infrastructure.pessoa.models.CreateServidorEfetivoResponse;
-import br.com.eduardosilva.infrastructure.pessoa.models.UpdateServidorEfetivoRequest;
-import br.com.eduardosilva.infrastructure.pessoa.models.UpdateServidorEfetivoResponse;
+import br.com.eduardosilva.infrastructure.api.ServidorAPI;
+import br.com.eduardosilva.infrastructure.endereco.presenters.EnderecoApiPresenter;
+import br.com.eduardosilva.infrastructure.pessoa.models.*;
+import br.com.eduardosilva.infrastructure.pessoa.presenters.PessoaApiPresenter;
 import br.com.eduardosilva.infrastructure.util.HashingUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,20 +25,26 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-public class ServidorEfetivoController implements ServidorEfetivoAPI {
+public class ServidorEfetivoController implements ServidorAPI {
 
     private final CreateServidorEfetivoUseCase createServidorEfetivoUseCase;
+    private final CreateServidorTemporarioUseCase createServidorTemporarioUseCase;
     private final UploadFotoUseCase uploadFotoUseCase;
     private final UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase;
+    private final UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase;
+    private final BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase;
 
     public ServidorEfetivoController(
-            CreateServidorEfetivoUseCase createServidorEfetivoUseCase,
+            CreateServidorEfetivoUseCase createServidorEfetivoUseCase, CreateServidorTemporarioUseCase createServidorTemporarioUseCase,
             UploadFotoUseCase uploadFotoUseCase,
-            UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase
+            UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase, UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase, BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase
     ) {
         this.createServidorEfetivoUseCase = createServidorEfetivoUseCase;
+        this.createServidorTemporarioUseCase = createServidorTemporarioUseCase;
         this.uploadFotoUseCase = uploadFotoUseCase;
         this.updateServidorEfetivoUseCase = updateServidorEfetivoUseCase;
+        this.updateServidorTemporarioUseCase = updateServidorTemporarioUseCase;
+        this.buscarPessoaPorIdUseCase = buscarPessoaPorIdUseCase;
     }
 
     @Override
@@ -47,8 +56,10 @@ public class ServidorEfetivoController implements ServidorEfetivoAPI {
     }
 
     @Override
-    public ResponseEntity<?> createServidorTemporario(CreateServidorEfetivoRequest input) {
-        return null;
+    public ResponseEntity<?> createServidorTemporario(CreateServidorTemporarioRequest input) {
+        final var res = createServidorTemporarioUseCase.execute(input, CreateServidorTemporarioResponse::new);
+        return ResponseEntity.created(URI.create("/servidor-efetivos/"+res.id()))
+                .body(res);
     }
 
     @Override
@@ -76,6 +87,26 @@ public class ServidorEfetivoController implements ServidorEfetivoAPI {
             throw DomainException.with("Serviço Efetivo identifier doesn't matches");
         }
         return  ResponseEntity.ok().body(updateServidorEfetivoUseCase.execute(req,UpdateServidorEfetivoResponse::new));
+    }
+
+    @Override
+    public ResponseEntity<?> updateByTemporarioId(Long id, UpdateServidorTemporarioRequest req) {
+        if (!Objects.equals(req.pesId(), id)) {
+            throw DomainException.with("Serviço Temporario identifier doesn't matches");
+        }
+        return  ResponseEntity.ok().body(updateServidorTemporarioUseCase.execute(req,UpdateServidorTemporarioResponse::new));
+    }
+
+    @Override
+    public BuscarPessoaPorIdResponse getById(Long id) {
+        final var aInput = new BuscarPessoaPorIdUseCase.Input(){
+            @Override
+            public Long pesId() {
+                return id;
+            }
+        };
+
+        return PessoaApiPresenter.present(this.buscarPessoaPorIdUseCase.execute(aInput));
     }
 
     private Resource resourceOf(final MultipartFile part) {

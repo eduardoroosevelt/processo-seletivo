@@ -36,6 +36,9 @@ public class PessoaJpaEntity {
     @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private ServidorEfetivoJpaEntity servidorEfetivoJpaEntity;
 
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    private ServidorTemporarioJpaEntity servidorTemporarioJpaEntity;
+
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PessoaEnderecoJpaEntity> enderecos;
 
@@ -112,5 +115,13 @@ public class PessoaJpaEntity {
 
     public void setFotos(Set<PessoaFotoJpaEntity> fotos) {
         this.fotos = fotos;
+    }
+
+    public ServidorTemporarioJpaEntity getServidorTemporarioJpaEntity() {
+        return servidorTemporarioJpaEntity;
+    }
+
+    public void setServidorTemporarioJpaEntity(ServidorTemporarioJpaEntity servidorTemporarioJpaEntity) {
+        this.servidorTemporarioJpaEntity = servidorTemporarioJpaEntity;
     }
 }

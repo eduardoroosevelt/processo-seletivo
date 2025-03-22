@@ -1,4 +1,4 @@
-package br.com.eduardosilva.infrastructure.usecases;
+package br.com.eduardosilva.infrastructure.config.usecases;
 
 import br.com.eduardosilva.application.cidade.BuscaCidadePaginadoUseCase;
 import br.com.eduardosilva.application.cidade.BuscarCidadePorIdUseCase;

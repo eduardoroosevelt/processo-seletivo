@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper( uses = {EnderecoMapper.class, ServidorEfetivoMapper.class})
+@Mapper( uses = {EnderecoMapper.class, ServidorEfetivoMapper.class, ServidorTemporarioMapper.class})
 public interface PessoaMapper {
     PessoaMapper INSTANCE = Mappers.getMapper(PessoaMapper.class);
 
@@ -26,7 +26,8 @@ public interface PessoaMapper {
     PessoaJpaEntity pessoaToPessoaJpaEntity(Pessoa pessoa);
 
     @Mapping(target = "pessoaId", expression = "java(new PessoaId(pessoaJpaEntity.getPesId()))")
-    @Mapping(target = "servidorEfetivo", source = "servidorEfetivoJpaEntity")
+    @Mapping(target = "updateServidorEfetivo", source = "servidorEfetivoJpaEntity")
+    @Mapping(target = "updateServidorTemporario", source = "servidorTemporarioJpaEntity")
     @Mapping(target = "enderecos", expression = "java(mapEnderecosId(pessoaJpaEntity.getEnderecos()) )")
     @Mapping(target = "fotos", expression = "java(mapPessoaFoto(pessoaJpaEntity.getFotos()) )")
     Pessoa pessoaJpaEntityToPessoa(PessoaJpaEntity pessoaJpaEntity);
@@ -68,4 +69,6 @@ public interface PessoaMapper {
         }
         return pesEnderecos;
     }
+
+
 }

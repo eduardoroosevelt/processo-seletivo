@@ -3,15 +3,10 @@ package br.com.eduardosilva.infrastructure.pessoa;
 import br.com.eduardosilva.domain.pessoa.Pessoa;
 import br.com.eduardosilva.domain.pessoa.PessoaGateway;
 import br.com.eduardosilva.domain.pessoa.PessoaId;
+import br.com.eduardosilva.domain.pessoa.ServidorTemporario;
 import br.com.eduardosilva.infrastructure.endereco.persistence.EnderecoJpaEntity;
-import br.com.eduardosilva.infrastructure.mapper.EnderecoMapper;
-import br.com.eduardosilva.infrastructure.mapper.PessoaMapper;
-import br.com.eduardosilva.infrastructure.mapper.ServidorEfetivoMapper;
-import br.com.eduardosilva.infrastructure.mapper.UnidadeMapper;
-import br.com.eduardosilva.infrastructure.pessoa.persistence.PessoaFotoJpaEntity;
-import br.com.eduardosilva.infrastructure.pessoa.persistence.PessoaJpaEntity;
-import br.com.eduardosilva.infrastructure.pessoa.persistence.PessoaRepository;
-import br.com.eduardosilva.infrastructure.pessoa.persistence.ServidorEfetivoJpaEntity;
+import br.com.eduardosilva.infrastructure.mapper.*;
+import br.com.eduardosilva.infrastructure.pessoa.persistence.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +45,12 @@ public class PessoaPostgresGateway implements PessoaGateway {
             ServidorEfetivoJpaEntity servidorEfetivoJpaEntity = ServidorEfetivoMapper.INSTANCE.servidorEfetivoToServidorEfetivoJpaEntity(pessoa.getServidorEfetivo());
             servidorEfetivoJpaEntity.setPessoa(pessoaJpaEntity);
             pessoaJpaEntity.setServidorEfetivoJpaEntity(servidorEfetivoJpaEntity);
+        }
+
+        if (pessoa.getServidorTemporario() != null) {
+            ServidorTemporarioJpaEntity servidorTempJpaEntity = ServidorTemporarioMapper.INSTANCE.servidorTemporarioToServidorTemporarioJpaEntity(pessoa.getServidorTemporario());
+            servidorTempJpaEntity.setPessoa(pessoaJpaEntity);
+            pessoaJpaEntity.setServidorTemporarioJpaEntity(servidorTempJpaEntity);
         }
 
         if(pessoa.getFotos()!= null){

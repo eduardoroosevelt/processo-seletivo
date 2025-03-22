@@ -1,5 +1,7 @@
 package br.com.eduardosilva.domain.pessoa;
 
+import br.com.eduardosilva.domain.exceptions.DomainException;
+
 public class ServidorEfetivo {
     String matricula;
 
@@ -19,11 +21,11 @@ public class ServidorEfetivo {
     private void setMatricula(String matricula) {
 
         if (matricula == null || matricula.isEmpty() ) {
-            throw new IllegalArgumentException("matrícula não pode ser nula");
+            DomainException.with("matrícula não pode ser nula");
         }
 
         if (matricula.length() > 200) {
-            throw new IllegalArgumentException("matrícula não pode ter mais de 20 caracteres");
+            DomainException.with("matrícula não pode ter mais de 20 caracteres");
         }
 
         this.matricula = matricula;

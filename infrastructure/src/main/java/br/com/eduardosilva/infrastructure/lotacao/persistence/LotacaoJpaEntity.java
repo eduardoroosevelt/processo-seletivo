@@ -1,5 +1,6 @@
-package br.com.eduardosilva.infrastructure.pessoa.persistence;
+package br.com.eduardosilva.infrastructure.lotacao.persistence;
 
+import br.com.eduardosilva.infrastructure.pessoa.persistence.PessoaJpaEntity;
 import br.com.eduardosilva.infrastructure.unidade.persistence.UnidadeJpaEntity;
 import jakarta.persistence.*;
 
@@ -27,6 +28,9 @@ public class LotacaoJpaEntity {
 
     @Column(name = "lot_data_remocao", nullable = false)
     private LocalDate lotDataRemocao;
+
+    @Column(name = "lot_portaria", nullable = false)
+    private String lotPortaria;
 
     public Long getLotId() {
         return lotId;
@@ -66,5 +70,13 @@ public class LotacaoJpaEntity {
 
     public void setLotDataRemocao(LocalDate lotDataRemocao) {
         this.lotDataRemocao = lotDataRemocao;
+    }
+
+    public String getLotPortaria() {
+        return lotPortaria;
+    }
+
+    public void setLotPortaria(String lotPortaria) {
+        this.lotPortaria = lotPortaria;
     }
 }

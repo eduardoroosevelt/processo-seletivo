@@ -16,9 +16,6 @@ public interface CidadeMapper {
     @Mapping(target = "id", expression = "java(cidade.id().value() )")
     CidadeJpaEntity cidadeToCidadeJpaEntity(Cidade cidade);
 
-    @Mapping(target = "id", expression = "java(cidadeId.value() )")
-    CidadeJpaEntity cidadeIdToCidadeJpaEntity(CidadeId cidadeId);
-
     // Mapeamento de CidadeJpaEntity para Cidade
     @Mapping(target = "cidadeId", expression = "java(new CidadeId(cidadeJpaEntity.getId()))")
     Cidade cidadeJpaEntityToCidade(CidadeJpaEntity cidadeJpaEntity);

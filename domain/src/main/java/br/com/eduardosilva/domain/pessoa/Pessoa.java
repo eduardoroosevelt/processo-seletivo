@@ -29,24 +29,6 @@ public class Pessoa extends Entity<PessoaId> {;
     private Set<PessoaFoto> fotos;
 
 
-//    public Pessoa(PessoaId pessoaId,
-//                  String pesNome,
-//                  LocalDate pesDataNascimento,
-//                  String pesSexo,
-//                  String pesMae,
-//                  String pesPai,
-//                  Set<EnderecoID> enderecos) {
-//
-//        super(pessoaId);
-//        setPesNome(pesNome);
-//        setPesDataNascimento(pesDataNascimento);
-//        setPesSexo(pesSexo);
-//        setPesMae(pesMae);
-//        setPesPai(pesPai);
-//        setEnderecos(enderecos);
-//    }
-
-
     public Pessoa(PessoaId pessoaId,
                   String pesNome,
                   LocalDate pesDataNascimento,
@@ -94,10 +76,6 @@ public class Pessoa extends Entity<PessoaId> {;
         return servidorEfetivo;
     }
 
-    public void setServidorEfetivo(ServidorEfetivo servidorEfetivo) {
-        this.servidorEfetivo = servidorEfetivo;
-    }
-
     public Pessoa updatePesNome(String pesNome) {
         if (pesNome != null) {
             setPesNome(pesNome);
@@ -143,6 +121,11 @@ public class Pessoa extends Entity<PessoaId> {;
         return this;
     }
 
+    public Pessoa updateServidorTemporario(ServidorTemporario servidorTemp){
+        this.setServidorTemporario(servidorTemp);
+        return this;
+    }
+
     private void setPesNome(String pesNome) {
         if (pesNome != null && !pesNome.isEmpty() && pesNome.length() <= 200) {
             this.pesNome = pesNome;
@@ -184,11 +167,15 @@ public class Pessoa extends Entity<PessoaId> {;
     }
 
     private void setEnderecos(Set<EnderecoID> enderecos) {
-        this.enderecos = enderecos != null ? new HashSet<>(enderecos) : Collections.emptySet();
+        this.enderecos = enderecos != null ? new HashSet<>(enderecos) : new HashSet<>();
     }
 
     public ServidorTemporario getServidorTemporario() {
         return servidorTemporario;
+    }
+
+    private void setServidorEfetivo(ServidorEfetivo servidorEfetivo) {
+        this.servidorEfetivo = servidorEfetivo;
     }
 
     private void setServidorTemporario(ServidorTemporario servidorTemporario) {
