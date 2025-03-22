@@ -48,3 +48,7 @@ storage:
   pessoa-foto:
     location-pattern: pessoaId-{pessoaId}
 
+springdoc:
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha

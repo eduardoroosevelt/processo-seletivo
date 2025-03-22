@@ -1,16 +1,16 @@
 package br.com.eduardosilva.infrastructure.api;
 
+import br.com.eduardosilva.infrastructure.endereco.models.EnderecoResponse;
 import br.com.eduardosilva.infrastructure.lotacao.models.CreateLotacaoRequest;
-import br.com.eduardosilva.infrastructure.pessoa.models.CreateServidorEfetivoRequest;
+import br.com.eduardosilva.infrastructure.lotacao.models.LotacaoResponse;
+import br.com.eduardosilva.infrastructure.lotacao.models.UpdateLotacaoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = "lotacao")
 @Tag(name = "Lotação")
@@ -25,6 +25,31 @@ public interface LotacaoAPI {
             @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    ResponseEntity<?> createPessoa(@RequestBody CreateLotacaoRequest input);
+    ResponseEntity<?> createLotacao(@RequestBody CreateLotacaoRequest input);
 
+    @PutMapping(
+            value = "{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Atualizar uma lotação pelo identificador")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lotação updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Lotação was not found"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    ResponseEntity<?> updateById(@PathVariable(name = "id") Long id, @RequestBody UpdateLotacaoRequest input);
+
+
+    @GetMapping(
+            value = "{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Buscar uma Lotação por identificador")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lotação retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Lotação was not found"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    LotacaoResponse getById(@PathVariable(name = "id") Long id);
 }

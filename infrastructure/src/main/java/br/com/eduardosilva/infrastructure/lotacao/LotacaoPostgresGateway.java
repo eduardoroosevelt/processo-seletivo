@@ -9,6 +9,7 @@ import br.com.eduardosilva.infrastructure.util.SqlUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -35,6 +36,7 @@ public class LotacaoPostgresGateway implements LotacaoGateway {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Lotacao> lotacaoOfId(LotacaoId anId) {
         final var t = this.lotacaoRepository.findById(anId.value());
         return this.lotacaoRepository.findById(anId.value())

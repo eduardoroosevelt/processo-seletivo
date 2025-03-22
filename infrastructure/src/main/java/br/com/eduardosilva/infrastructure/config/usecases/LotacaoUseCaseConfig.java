@@ -1,7 +1,11 @@
 package br.com.eduardosilva.infrastructure.config.usecases;
 
+import br.com.eduardosilva.application.lotacao.BuscarLotacaoPorIdUseCase;
 import br.com.eduardosilva.application.lotacao.CreateLotacaoUseCase;
+import br.com.eduardosilva.application.lotacao.UpdateLotacaoUseCase;
+import br.com.eduardosilva.application.lotacao.impl.DefaultBuscarLotacaoPorIdUseCase;
 import br.com.eduardosilva.application.lotacao.impl.DefaultCreateLotacaoUseCase;
+import br.com.eduardosilva.application.lotacao.impl.DefaultUpdateLotacaoUseCase;
 import br.com.eduardosilva.domain.lotacao.LotacaoGateway;
 import br.com.eduardosilva.domain.pessoa.PessoaGateway;
 import br.com.eduardosilva.domain.unidade.UnidadeGateway;
@@ -32,5 +36,19 @@ public class LotacaoUseCaseConfig {
                 pessoaGateway,
                 unidadeGateway
         );
+    }
+
+    @Bean
+    public UpdateLotacaoUseCase updateLotacaoUseCase(){
+        return new DefaultUpdateLotacaoUseCase(
+                lotacaoGateway,
+                pessoaGateway,
+                unidadeGateway
+        );
+    }
+
+    @Bean
+    public BuscarLotacaoPorIdUseCase buscarLotacaoPorIdUseCase(){
+        return new DefaultBuscarLotacaoPorIdUseCase(lotacaoGateway);
     }
 }

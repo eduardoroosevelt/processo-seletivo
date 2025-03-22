@@ -1,5 +1,6 @@
 package br.com.eduardosilva.application.lotacao.impl;
 
+import br.com.eduardosilva.application.lotacao.CreateLotacaoUseCase;
 import br.com.eduardosilva.application.lotacao.UpdateLotacaoUseCase;
 import br.com.eduardosilva.domain.exceptions.DomainException;
 import br.com.eduardosilva.domain.exceptions.NotFoundException;
@@ -38,6 +39,16 @@ public class DefaultUpdateLotacaoUseCase extends UpdateLotacaoUseCase {
         final Pessoa aPessoa = this.pessoaGateway.pessoaOfId(new PessoaId(input.pesId()))
                 .orElseThrow(() -> DomainException.with("Pessoa com id %s não pode ser encontrado".formatted(input.pesId())));
 
-        return null;
+        aLotacao.updateLotDataLotacao(input.lotDataLotacao());
+        aLotacao.updateLotDataRemocao(input.lotDataRemocao());
+        aLotacao.updateLotPortaria(input.lotPortaria());
+        aLotacao.updatePessoa(aPessoa);
+        aLotacao.updateUnidade(aUnidade);
+
+        final var lotacaoBD = lotacaoGateway.save(aLotacao);
+
+        return  new DefaultUpdateLotacaoUseCase.StdOutput(lotacaoBD.id());
     }
+
+    record StdOutput(LotacaoId lotId) implements UpdateLotacaoUseCase.Output {}
 }

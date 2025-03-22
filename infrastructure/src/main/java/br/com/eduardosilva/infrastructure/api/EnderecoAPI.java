@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping(value = "enderecos")
-@Tag(name = "Endereco")
+@Tag(name = "Endereço")
 public interface EnderecoAPI {
 
     @PostMapping(
