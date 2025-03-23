@@ -40,5 +40,5 @@ public interface AutenticacaoAPI {
             @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String authorizationHeader,  @RequestBody(required = false) Object body);
+    ResponseEntity<?> refreshToken(@RequestHeader("refresh-token") String authorizationHeader,  @RequestBody(required = false) Object body);
 }

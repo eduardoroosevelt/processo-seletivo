@@ -41,7 +41,7 @@ public class AuthController implements AutenticacaoAPI {
     }
 
     @Override
-    public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String authorizationHeader, @RequestBody(required = false) Object body) {
+    public ResponseEntity<?> refreshToken(@RequestHeader("refresh-token") String authorizationHeader, @RequestBody(required = false) Object body) {
 
 
         if (!tokenProvider.validateRefreshToken(authorizationHeader)) {
@@ -49,7 +49,7 @@ public class AuthController implements AutenticacaoAPI {
         }
 
         // Extrair o nome do usuário do refresh token
-        String username = tokenProvider.getUsernameFromToken(authorizationHeader);
+        String username = tokenProvider.getUsernameFromRefreshToken(authorizationHeader);
 
         // Gerar novos tokens
         String newAccessToken = tokenProvider.generateTokenFromUsername(username);

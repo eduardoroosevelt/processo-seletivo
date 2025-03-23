@@ -98,5 +98,10 @@ public class JwtServiceImpl implements JwtService {
          return jws.getPayload().getSubject();
     }
 
+    @Override
+    public String getUsernameFromRefreshToken(String token) {
+        var jws = Jwts.parser().verifyWith(keyRefresh).build().parseSignedClaims(token);
+        return jws.getPayload().getSubject();
+    }
 
 }
