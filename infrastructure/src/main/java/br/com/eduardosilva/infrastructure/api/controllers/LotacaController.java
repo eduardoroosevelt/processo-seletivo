@@ -2,6 +2,7 @@ package br.com.eduardosilva.infrastructure.api.controllers;
 
 import br.com.eduardosilva.application.lotacao.BuscarLotacaoPorIdUseCase;
 import br.com.eduardosilva.application.lotacao.CreateLotacaoUseCase;
+import br.com.eduardosilva.application.lotacao.DeleteLotacaoUseCase;
 import br.com.eduardosilva.application.lotacao.UpdateLotacaoUseCase;
 import br.com.eduardosilva.domain.exceptions.DomainException;
 import br.com.eduardosilva.infrastructure.api.LotacaoAPI;
@@ -19,14 +20,16 @@ public class LotacaController implements LotacaoAPI {
     private final CreateLotacaoUseCase createLotacaoUseCase;
     private final UpdateLotacaoUseCase updateLotacaoUseCase;
     private final BuscarLotacaoPorIdUseCase buscarLotacaoPorIdUseCase;
+    private final DeleteLotacaoUseCase deleteLotacaoUseCase;
 
     public LotacaController(
             CreateLotacaoUseCase createLotacaoUseCase,
-            UpdateLotacaoUseCase updateLotacaoUseCase, BuscarLotacaoPorIdUseCase buscarLotacaoPorIdUseCase
+            UpdateLotacaoUseCase updateLotacaoUseCase, BuscarLotacaoPorIdUseCase buscarLotacaoPorIdUseCase, DeleteLotacaoUseCase deleteLotacaoUseCase
     ) {
         this.createLotacaoUseCase = createLotacaoUseCase;
         this.updateLotacaoUseCase = updateLotacaoUseCase;
         this.buscarLotacaoPorIdUseCase = buscarLotacaoPorIdUseCase;
+        this.deleteLotacaoUseCase = deleteLotacaoUseCase;
     }
 
     @Override
@@ -55,6 +58,11 @@ public class LotacaController implements LotacaoAPI {
             }
         };
         return LotacaoApiPresenter.present(this.buscarLotacaoPorIdUseCase.execute(aInput));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        this.deleteLotacaoUseCase.execute(id);
     }
 
 }

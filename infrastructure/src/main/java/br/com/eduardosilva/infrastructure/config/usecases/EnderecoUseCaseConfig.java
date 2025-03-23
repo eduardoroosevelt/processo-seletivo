@@ -1,13 +1,7 @@
 package br.com.eduardosilva.infrastructure.config.usecases;
 
-import br.com.eduardosilva.application.endereco.BuscarEnderecoPaginadoUseCase;
-import br.com.eduardosilva.application.endereco.BuscarEnderecoPorIdUseCase;
-import br.com.eduardosilva.application.endereco.CreateEnderecoUseCase;
-import br.com.eduardosilva.application.endereco.UpdateEnderecoUseCase;
-import br.com.eduardosilva.application.endereco.impl.DefaultBuscarEnderecoPaginadoUseCase;
-import br.com.eduardosilva.application.endereco.impl.DefaultCreateEnderecoUseCase;
-import br.com.eduardosilva.application.endereco.impl.DefaultUpdateEndereco;
-import br.com.eduardosilva.application.endereco.impl.DefaultiBuscarEnderecoPorIdUseCase;
+import br.com.eduardosilva.application.endereco.*;
+import br.com.eduardosilva.application.endereco.impl.*;
 import br.com.eduardosilva.domain.cidade.CidadeGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import org.springframework.context.annotation.Bean;
@@ -42,5 +36,10 @@ public class EnderecoUseCaseConfig {
     @Bean
     BuscarEnderecoPaginadoUseCase buscarEnderecoPaginadoUseCase(){
         return new DefaultBuscarEnderecoPaginadoUseCase(enderecoGateway);
+    }
+
+    @Bean
+    DeleteEnderecoUseCase deleteEnderecoUseCase(){
+        return new DefaultDeleteEnderecoUseCase(enderecoGateway);
     }
 }

@@ -38,6 +38,14 @@ public class EnderecoPostgresGateway implements EnderecoGateway {
     }
 
     @Override
+    public void delete(EnderecoID endId) {
+        final var aEnderecoId = endId.value();
+        if (this.enderecoRepository.existsById(aEnderecoId)) {
+            this.enderecoRepository.deleteById(aEnderecoId);
+        }
+    }
+
+    @Override
     public Optional<Endereco> enderecoOfId(EnderecoID anId) {
         return enderecoRepository.findById(anId.value())
                 .map(EnderecoMapper.INSTANCE::enderecoJpaEntityToendereco);

@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface EnderecoGateway {
     EnderecoID nextId();
     Endereco save(Endereco endereco);
+    void delete(EnderecoID endId);
     Optional<Endereco> enderecoOfId(final EnderecoID anId);
     Pagination<EnderecoPreview> findAll(EnderecoSearchQuery search);
     List<EnderecoID> existsByIds(Iterable<EnderecoID> ids);

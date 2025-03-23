@@ -1,9 +1,6 @@
 package br.com.eduardosilva.infrastructure.api.controllers;
 
-import br.com.eduardosilva.application.unidade.BuscarUnidadePaginadoUseCase;
-import br.com.eduardosilva.application.unidade.BuscarUnidadePorIdUseCase;
-import br.com.eduardosilva.application.unidade.CreateUnidadeUseCase;
-import br.com.eduardosilva.application.unidade.UpdateUnidadeUseCase;
+import br.com.eduardosilva.application.unidade.*;
 import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.exceptions.DomainException;
 import br.com.eduardosilva.domain.unidade.UnidadePreview;
@@ -24,14 +21,17 @@ public class UnidadeController implements UnidadeAPI {
     private final CreateUnidadeUseCase createUnidadeUseCase;
     private final BuscarUnidadePorIdUseCase buscarUnidadePorIdUseCase;
     private final BuscarUnidadePaginadoUseCase buscarUnidadePaginadoUseCase;
+    private final DeleteUnidadeUseCase deleteUnidadeUseCase;
+
 
     public UnidadeController(UpdateUnidadeUseCase updateUnidadeUseCase,
                              CreateUnidadeUseCase createUnidadeUseCase,
-                             BuscarUnidadePorIdUseCase buscarUnidadePorIdUseCase, BuscarUnidadePaginadoUseCase buscarUnidadePaginadoUseCase) {
+                             BuscarUnidadePorIdUseCase buscarUnidadePorIdUseCase, BuscarUnidadePaginadoUseCase buscarUnidadePaginadoUseCase, DeleteUnidadeUseCase deleteUnidadeUseCase) {
         this.updateUnidadeUseCase = updateUnidadeUseCase;
         this.createUnidadeUseCase = createUnidadeUseCase;
         this.buscarUnidadePorIdUseCase = buscarUnidadePorIdUseCase;
         this.buscarUnidadePaginadoUseCase = buscarUnidadePaginadoUseCase;
+        this.deleteUnidadeUseCase = deleteUnidadeUseCase;
     }
 
     @Override
@@ -68,5 +68,10 @@ public class UnidadeController implements UnidadeAPI {
     public Pagination<UnidadePreview> list(int page, int perPage, String nome, String sigla) {
         final var parm = new UnidadeSearchQuery(page, perPage,nome,sigla);
         return buscarUnidadePaginadoUseCase.execute(parm);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        this.deleteUnidadeUseCase.execute(id);
     }
 }

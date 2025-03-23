@@ -1,9 +1,6 @@
 package br.com.eduardosilva.infrastructure.api.controllers;
 
-import br.com.eduardosilva.application.cidade.BuscaCidadePaginadoUseCase;
-import br.com.eduardosilva.application.cidade.BuscarCidadePorIdUseCase;
-import br.com.eduardosilva.application.cidade.CreateCidadeUseCase;
-import br.com.eduardosilva.application.cidade.UpdateCidadeUseCase;
+import br.com.eduardosilva.application.cidade.*;
 import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.cidade.Cidade;
 import br.com.eduardosilva.domain.cidade.CidadeId;
@@ -25,13 +22,15 @@ public class CidadeController implements CidadeAPI {
     private final UpdateCidadeUseCase updateCidadeUseCase;
     private final BuscaCidadePaginadoUseCase buscaCidadePaginadoUseCase;
     private final BuscarCidadePorIdUseCase buscarCidadePorIdUseCase;
+    private final DeleteCidadeUseCase deleteCidadeUseCase;
 
     public CidadeController(CreateCidadeUseCase createCidadeUseCase,
-                            UpdateCidadeUseCase updateCidadeUseCase, BuscaCidadePaginadoUseCase buscaCidadePaginadoUseCase, BuscarCidadePorIdUseCase buscarCidadePorIdUseCase) {
+                            UpdateCidadeUseCase updateCidadeUseCase, BuscaCidadePaginadoUseCase buscaCidadePaginadoUseCase, BuscarCidadePorIdUseCase buscarCidadePorIdUseCase, DeleteCidadeUseCase deleteCidadeUseCase) {
         this.createCidadeUseCase = createCidadeUseCase;
         this.updateCidadeUseCase = updateCidadeUseCase;
         this.buscaCidadePaginadoUseCase = buscaCidadePaginadoUseCase;
         this.buscarCidadePorIdUseCase = buscarCidadePorIdUseCase;
+        this.deleteCidadeUseCase = deleteCidadeUseCase;
     }
 
     @Override
@@ -67,5 +66,10 @@ public class CidadeController implements CidadeAPI {
 
         final var a=  CidadeApiPresenter.present(buscarCidadePorIdUseCase.execute(aInput));
         return a;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        this.deleteCidadeUseCase.execute(id);
     }
 }

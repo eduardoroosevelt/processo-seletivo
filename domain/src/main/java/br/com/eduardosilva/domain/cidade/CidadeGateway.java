@@ -10,4 +10,5 @@ public interface CidadeGateway {
     Optional<Cidade> cidadeOfId(final CidadeId anId);
     Pagination<CidadePreview> findAll(CidadeSearchQuery search);
 
+    void delete(CidadeId cidadeId);
 }

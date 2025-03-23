@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,4 +68,14 @@ public interface UnidadeAPI {
             @RequestParam(name = "nome", required = false, defaultValue = "")  String nome,
             @RequestParam(name = "sigla", required = false, defaultValue = "")  String sigla
     );
+
+
+    @DeleteMapping(value = "{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Deleta um unidade pelo identificador")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Unidade deletado"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    void deleteById(@PathVariable(name = "id") Long id);
 }

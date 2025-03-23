@@ -61,4 +61,12 @@ public class CidadePostgresGateway implements CidadeGateway {
                 actualPage.toList()
         );
     }
+
+    @Override
+    public void delete(CidadeId cidadeId) {
+        final var aCidadeId = cidadeId.value();
+        if (this.cidadeRepository.existsById(aCidadeId)) {
+            this.cidadeRepository.deleteById(aCidadeId);
+        }
+    }
 }

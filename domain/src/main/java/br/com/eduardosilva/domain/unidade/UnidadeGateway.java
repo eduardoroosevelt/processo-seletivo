@@ -9,4 +9,6 @@ public interface UnidadeGateway {
     Unidade save(Unidade unidade);
     Optional<Unidade> unidadeOfId(UnidadeId anId);
     Pagination<UnidadePreview> findAll(UnidadeSearchQuery search);
+
+    void delete(UnidadeId unidadeId);
 }

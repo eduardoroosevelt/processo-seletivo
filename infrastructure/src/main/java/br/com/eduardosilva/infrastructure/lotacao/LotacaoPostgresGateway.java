@@ -62,4 +62,12 @@ public class LotacaoPostgresGateway implements LotacaoGateway {
                 actualPage.toList()
         );
     }
+
+    @Override
+    public void delete(LotacaoId lotacaoId) {
+        final var aLotacaoId = lotacaoId.value();
+        if (this.lotacaoRepository.existsById(aLotacaoId)) {
+            this.lotacaoRepository.deleteById(aLotacaoId);
+        }
+    }
 }

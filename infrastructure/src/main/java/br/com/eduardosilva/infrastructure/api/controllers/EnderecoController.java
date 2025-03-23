@@ -1,9 +1,6 @@
 package br.com.eduardosilva.infrastructure.api.controllers;
 
-import br.com.eduardosilva.application.endereco.BuscarEnderecoPaginadoUseCase;
-import br.com.eduardosilva.application.endereco.BuscarEnderecoPorIdUseCase;
-import br.com.eduardosilva.application.endereco.CreateEnderecoUseCase;
-import br.com.eduardosilva.application.endereco.UpdateEnderecoUseCase;
+import br.com.eduardosilva.application.endereco.*;
 import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.cidade.CidadeId;
 import br.com.eduardosilva.domain.cidade.CidadeSearchQuery;
@@ -26,15 +23,17 @@ public class EnderecoController implements EnderecoAPI {
     private final UpdateEnderecoUseCase updateEnderecoUseCase;
     private final BuscarEnderecoPorIdUseCase buscarEnderecoPorIdUseCase;
     private final BuscarEnderecoPaginadoUseCase buscarEnderecoPaginadoUseCase;
+    private final DeleteEnderecoUseCase deleteEnderecoUseCase;
 
     public EnderecoController(CreateEnderecoUseCase createEnderecoUseCase,
                               UpdateEnderecoUseCase updateEnderecoUseCase,
                               BuscarEnderecoPorIdUseCase buscarEnderecoPorIdUseCase,
-                              BuscarEnderecoPaginadoUseCase buscarEnderecoPaginadoUseCase) {
+                              BuscarEnderecoPaginadoUseCase buscarEnderecoPaginadoUseCase, DeleteEnderecoUseCase deleteEnderecoUseCase) {
         this.createEnderecoUseCase = createEnderecoUseCase;
         this.updateEnderecoUseCase = updateEnderecoUseCase;
         this.buscarEnderecoPorIdUseCase = buscarEnderecoPorIdUseCase;
         this.buscarEnderecoPaginadoUseCase = buscarEnderecoPaginadoUseCase;
+        this.deleteEnderecoUseCase = deleteEnderecoUseCase;
     }
 
     @Override
@@ -69,5 +68,10 @@ public class EnderecoController implements EnderecoAPI {
         final var aCidadeId = cidadeId != null ? new CidadeId(cidadeId) : CidadeId.empty();
         final var parm = new EnderecoSearchQuery(page,perPage,endTipoLogradouro,  endLogradouro,  endNumero,  endBairro, aCidadeId);
         return buscarEnderecoPaginadoUseCase.execute(parm);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        this.deleteEnderecoUseCase.execute(id);
     }
 }

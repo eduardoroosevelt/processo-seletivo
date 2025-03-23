@@ -65,4 +65,12 @@ public class UnidadePostgreGateway implements UnidadeGateway {
                 actualPage.toList()
         );
     }
+
+    @Override
+    public void delete(UnidadeId unidadeId) {
+        final var uniId = unidadeId.value();
+        if (this.unidadeRepository.existsById(uniId)) {
+            this.unidadeRepository.deleteById(uniId);
+        }
+    }
 }

@@ -8,4 +8,6 @@ public interface LotacaoGateway {
     Lotacao save(Lotacao pessoa);
     Optional<Lotacao> lotacaoOfId(final LotacaoId anId);
     Pagination<LotacaoPreview> findAll(LotacaoSearchQuery search);
+
+    void delete(LotacaoId lotacaoId);
 }
