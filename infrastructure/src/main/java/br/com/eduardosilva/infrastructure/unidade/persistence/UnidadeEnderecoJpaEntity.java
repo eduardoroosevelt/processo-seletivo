@@ -1,6 +1,5 @@
 package br.com.eduardosilva.infrastructure.unidade.persistence;
 
-import br.com.eduardosilva.infrastructure.endereco.persistence.EnderecoJpaEntity;
 import jakarta.persistence.*;
 
 @Entity(name = "unidade_endereco")

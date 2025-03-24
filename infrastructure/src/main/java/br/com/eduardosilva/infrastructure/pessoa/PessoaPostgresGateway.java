@@ -1,12 +1,11 @@
 package br.com.eduardosilva.infrastructure.pessoa;
 
-import br.com.eduardosilva.domain.pessoa.Pessoa;
-import br.com.eduardosilva.domain.pessoa.PessoaGateway;
-import br.com.eduardosilva.domain.pessoa.PessoaId;
-import br.com.eduardosilva.domain.pessoa.ServidorTemporario;
-import br.com.eduardosilva.infrastructure.endereco.persistence.EnderecoJpaEntity;
+import br.com.eduardosilva.domain.Pagination;
+import br.com.eduardosilva.domain.pessoa.*;
 import br.com.eduardosilva.infrastructure.mapper.*;
 import br.com.eduardosilva.infrastructure.pessoa.persistence.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,5 +76,49 @@ public class PessoaPostgresGateway implements PessoaGateway {
         return this.pessoaRepository.findById(anId.value())
                 .map(PessoaMapper.INSTANCE::pessoaJpaEntityToPessoa);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Pagination<ServidorEfetivoPorUnidadeIdPreview> findServidoresEfetivosByUnidade(ServidorEfetivoPorUnidadeIdSearchQuery search) {
+       final var page = PageRequest.of(
+                search.page(),
+                search.perPage()
+       );
+       final var actualPage = this.pessoaRepository.findServidoresEfetivosWithFotografiasByUnidade(search.unidId().value(),page);
+
+        return  new Pagination<>(
+            actualPage.getNumber(),
+            actualPage.getSize(),
+            actualPage.getTotalElements(),
+            actualPage
+                    .toList()
+                    .stream()
+                    .map(p -> new ServidorEfetivoPorUnidadeIdPreview(
+                            p.pessoa().getPesNome(),
+                            p.unidadeLotacao(),
+                            p.pessoa().getPesDataNascimento(),
+                            p.pessoa().getFotos().stream().map(PessoaFotoJpaEntity::getFpBucket).collect(Collectors.toSet())
+                    ))
+                    .toList());
+    }
+
+    @Override
+    public Pagination<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(EnderecoFuncionalPorNomeServidorSearch search) {
+        final var page = PageRequest.of(
+                search.page(),
+                search.perPage()
+        );
+
+        final Page<EnderecoFuncionalPorNomeServidorPreview> actualPage = this.pessoaRepository.findEnderecoByNomeServidor(search.nomeParte(),page);
+
+
+        return new Pagination<>(
+                actualPage.getNumber(),
+                actualPage.getSize(),
+                actualPage.getTotalElements(),
+                actualPage.toList()
+        );
+    }
+
 
 }

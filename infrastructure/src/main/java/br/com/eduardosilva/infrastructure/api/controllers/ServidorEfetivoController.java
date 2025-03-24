@@ -3,12 +3,20 @@ package br.com.eduardosilva.infrastructure.api.controllers;
 import br.com.eduardosilva.application.endereco.BuscarEnderecoPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.UploadFotoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarEnderecoByNomeServidorUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarServidorEfetivoPorUnidadeId;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.UpdateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
+import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.pessoa.EnderecoFuncionalPorNomeServidorPreview;
+import br.com.eduardosilva.domain.pessoa.EnderecoFuncionalPorNomeServidorSearch;
+import br.com.eduardosilva.domain.pessoa.ServidorEfetivoPorUnidadeIdPreview;
+import br.com.eduardosilva.domain.pessoa.ServidorEfetivoPorUnidadeIdSearchQuery;
 import br.com.eduardosilva.domain.shared.Resource;
+import br.com.eduardosilva.domain.unidade.UnidadeId;
 import br.com.eduardosilva.infrastructure.api.ServidorAPI;
 import br.com.eduardosilva.infrastructure.endereco.presenters.EnderecoApiPresenter;
 import br.com.eduardosilva.infrastructure.pessoa.models.*;
@@ -33,11 +41,13 @@ public class ServidorEfetivoController implements ServidorAPI {
     private final UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase;
     private final UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase;
     private final BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase;
+    private final BuscarServidorEfetivoPorUnidadeId buscarServidorEfetivoPorUnidadeId;
+    private final BuscarEnderecoByNomeServidorUseCase buscarEnderecoByNomeServidorUseCase;
 
     public ServidorEfetivoController(
             CreateServidorEfetivoUseCase createServidorEfetivoUseCase, CreateServidorTemporarioUseCase createServidorTemporarioUseCase,
             UploadFotoUseCase uploadFotoUseCase,
-            UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase, UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase, BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase
+            UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase, UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase, BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase, BuscarServidorEfetivoPorUnidadeId buscarServidorEfetivoPorUnidadeId, BuscarEnderecoByNomeServidorUseCase buscarEnderecoByNomeServidorUseCase
     ) {
         this.createServidorEfetivoUseCase = createServidorEfetivoUseCase;
         this.createServidorTemporarioUseCase = createServidorTemporarioUseCase;
@@ -45,6 +55,8 @@ public class ServidorEfetivoController implements ServidorAPI {
         this.updateServidorEfetivoUseCase = updateServidorEfetivoUseCase;
         this.updateServidorTemporarioUseCase = updateServidorTemporarioUseCase;
         this.buscarPessoaPorIdUseCase = buscarPessoaPorIdUseCase;
+        this.buscarServidorEfetivoPorUnidadeId = buscarServidorEfetivoPorUnidadeId;
+        this.buscarEnderecoByNomeServidorUseCase = buscarEnderecoByNomeServidorUseCase;
     }
 
     @Override
@@ -107,6 +119,18 @@ public class ServidorEfetivoController implements ServidorAPI {
         };
 
         return PessoaApiPresenter.present(this.buscarPessoaPorIdUseCase.execute(aInput));
+    }
+
+    @Override
+    public Pagination<BuscarServidorEfetivoPorUnidadeId.Output> buscarServidoresLotadosEmDeterminadaUnidade(int page, int perPage, Long unidadeId) {
+        final var input = new ServidorEfetivoPorUnidadeIdSearchQuery(page,perPage, new UnidadeId(unidadeId));
+        return this.buscarServidorEfetivoPorUnidadeId.execute(input);
+    }
+
+    @Override
+    public Pagination<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(int page, int perPage, String nomeParte) {
+        final var input = new EnderecoFuncionalPorNomeServidorSearch(page,perPage,nomeParte);
+        return buscarEnderecoByNomeServidorUseCase.execute(input);
     }
 
     private Resource resourceOf(final MultipartFile part) {

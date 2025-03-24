@@ -1,6 +1,7 @@
 package br.com.eduardosilva.infrastructure.pessoa.persistence;
 
 import br.com.eduardosilva.domain.pessoa.PessoaFoto;
+import br.com.eduardosilva.infrastructure.lotacao.persistence.LotacaoJpaEntity;
 import br.com.eduardosilva.infrastructure.unidade.persistence.UnidadeEnderecoJpaEntity;
 import jakarta.persistence.*;
 
@@ -41,6 +42,9 @@ public class PessoaJpaEntity {
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PessoaEnderecoJpaEntity> enderecos;
+
+    @OneToMany(mappedBy = "pessoa")
+    private Set<LotacaoJpaEntity> lotacoes;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PessoaFotoJpaEntity> fotos;
@@ -123,5 +127,13 @@ public class PessoaJpaEntity {
 
     public void setServidorTemporarioJpaEntity(ServidorTemporarioJpaEntity servidorTemporarioJpaEntity) {
         this.servidorTemporarioJpaEntity = servidorTemporarioJpaEntity;
+    }
+
+    public Set<LotacaoJpaEntity> getLotacoes() {
+        return lotacoes;
+    }
+
+    public void setLotacoes(Set<LotacaoJpaEntity> lotacoes) {
+        this.lotacoes = lotacoes;
     }
 }

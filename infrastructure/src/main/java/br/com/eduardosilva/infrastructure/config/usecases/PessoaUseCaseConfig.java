@@ -4,8 +4,12 @@ import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.UploadFotoUseCase;
 import br.com.eduardosilva.application.pessoa.impl.DefaultBuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.impl.DefaultUploadFotoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarEnderecoByNomeServidorUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarServidorEfetivoPorUnidadeId;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.UpdateServidorEfetivoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultBuscarEnderecoByNomeServidorUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultBuscarServidorEfetivoPorUnidadeId;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultCreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultUpdateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
@@ -58,5 +62,15 @@ public class PessoaUseCaseConfig {
     @Bean
     public BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase(){
         return new DefaultBuscarPessoaPorIdUseCase(pessoaGateway,mediaResourceGateway);
+    }
+
+    @Bean
+    public BuscarServidorEfetivoPorUnidadeId buscarServidorEfetivoPorUnidadeId(){
+        return new DefaultBuscarServidorEfetivoPorUnidadeId(mediaResourceGateway,pessoaGateway);
+    }
+
+    @Bean
+    public BuscarEnderecoByNomeServidorUseCase buscarEnderecoByNomeServidorUseCase(){
+        return  new DefaultBuscarEnderecoByNomeServidorUseCase(pessoaGateway);
     }
 }

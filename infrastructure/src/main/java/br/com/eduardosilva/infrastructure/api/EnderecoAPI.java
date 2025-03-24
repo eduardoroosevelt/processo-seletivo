@@ -58,9 +58,9 @@ public interface EnderecoAPI {
     EnderecoResponse getById(@PathVariable(name = "id") Long id);
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "List all cidade paginated")
+    @Operation(summary = "List all Endereço paginated")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cidade listed"),
+            @ApiResponse(responseCode = "200", description = "Endereço listed"),
             @ApiResponse(responseCode = "422", description = "A query param was invalid"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
