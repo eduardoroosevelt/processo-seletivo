@@ -45,7 +45,7 @@ public class StorageConfig {
     public StorageService gcStorageAPI(
             final MinioClient storage
     ) {
-        return new MinIOStorageService(bucketName, storage,s3urlIpPublic);
+        return new MinIOStorageService(bucketName, storage,s3urlIpPublic,s3url);
     }
 
     @Bean
