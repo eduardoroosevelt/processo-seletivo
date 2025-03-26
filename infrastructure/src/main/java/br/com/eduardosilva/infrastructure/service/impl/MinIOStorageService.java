@@ -17,10 +17,12 @@ import java.util.Optional;
 public class MinIOStorageService implements StorageService {
     private final String bucket;
     private final MinioClient minioClient;
+    private final String ip_public;
 
-    public MinIOStorageService(String bucket, MinioClient minioClient) {
+    public MinIOStorageService(String bucket, MinioClient minioClient, String ipPublic) {
         this.bucket = bucket;
         this.minioClient = minioClient;
+        ip_public = ipPublic;
     }
 
     @Override
@@ -101,12 +103,14 @@ public class MinIOStorageService implements StorageService {
                 .method(Method.GET)
                 .bucket(bucket)
                 .object(id)
-
                 .build();
 
         try{
             String url = minioClient.getPresignedObjectUrl(args);
-            return url;
+            System.out.println(url);
+            System.out.println( url.replace("http://minio:9000",ip_public));
+
+            return url.replace("http://minio:9000",ip_public);
         }catch(ErrorResponseException | InsufficientDataException | InternalException
                | InvalidKeyException | InvalidResponseException | IOException
                | NoSuchAlgorithmException | ServerException | XmlParserException e){

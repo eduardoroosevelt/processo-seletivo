@@ -10,11 +10,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+
 @Configuration
 public class StorageConfig {
 
+
     @Value("${seletivo.s3.url}")
     private String s3url;
+
+    @Value("${seletivo.s3.urlPublic}")
+    private String s3urlIpPublic;
 
     @Value("${seletivo.s3.access-key}")
     private String s3AccessKey;
@@ -26,9 +33,9 @@ public class StorageConfig {
     private String bucketName;
 
     @Bean
-    public MinioClient minioClient(){
+    public MinioClient minioClient() throws MalformedURLException {
        return MinioClient.builder()
-                .endpoint(s3url)
+                .endpoint(URI.create(s3url).toURL())
                 .credentials(s3AccessKey, s3AccessSecret)
                 .build();
     }
@@ -38,7 +45,7 @@ public class StorageConfig {
     public StorageService gcStorageAPI(
             final MinioClient storage
     ) {
-        return new MinIOStorageService(bucketName, storage);
+        return new MinIOStorageService(bucketName, storage,s3urlIpPublic);
     }
 
     @Bean
