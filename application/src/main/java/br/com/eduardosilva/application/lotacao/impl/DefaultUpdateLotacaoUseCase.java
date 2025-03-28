@@ -39,8 +39,7 @@ public class DefaultUpdateLotacaoUseCase extends UpdateLotacaoUseCase {
         final Pessoa aPessoa = this.pessoaGateway.pessoaOfId(new PessoaId(input.pesId()))
                 .orElseThrow(() -> DomainException.with("Pessoa com id %s não pode ser encontrado".formatted(input.pesId())));
 
-        aLotacao.updateLotDataLotacao(input.lotDataLotacao());
-        aLotacao.updateLotDataRemocao(input.lotDataRemocao());
+        aLotacao.updateDataLotacaoERemocao(input.lotDataLotacao(),input.lotDataRemocao());
         aLotacao.updateLotPortaria(input.lotPortaria());
         aLotacao.updatePessoa(aPessoa);
         aLotacao.updateUnidade(aUnidade);

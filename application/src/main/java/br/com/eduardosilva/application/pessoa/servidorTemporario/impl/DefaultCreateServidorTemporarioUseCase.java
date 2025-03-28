@@ -46,7 +46,10 @@ public class DefaultCreateServidorTemporarioUseCase extends CreateServidorTempor
         Pessoa pessoa;
         if(opPessoa.isPresent()){
             if(opPessoa.get().getServidorTemporario() != null){
-                throw DomainException.with("Pessoa já cadastrada como servidor temporario ");
+                throw DomainException.with("Pessoa já cadastrada como servidor temporario. ");
+            }
+            if(opPessoa.get().getServidorEfetivo()!= null){
+                throw DomainException.with("Pessoa está cadastrada como servidor efetivo. ");
             }
             pessoa = opPessoa.get();
             pessoa.updateServidorTemporario(servidorTemp);

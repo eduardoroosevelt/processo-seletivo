@@ -40,10 +40,22 @@ public class Unidade extends Entity<UnidadeId> {
     }
 
     private void setNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da unidade não pode ser vazio.");
+        }
+        if (nome.length() > 200) {
+            throw new IllegalArgumentException("O nome da unidade deve ter no máximo 200 caracteres.");
+        }
         this.nome = nome;
     }
 
     private void setSigla(String sigla) {
+        if (sigla == null || sigla.trim().isEmpty()) {
+            throw new IllegalArgumentException("A sigla da unidade não pode ser vazia.");
+        }
+        if (sigla.length() > 20) {
+            throw new IllegalArgumentException("A sigla da unidade deve ter no máximo 20 caracteres.");
+        }
         this.sigla = sigla;
     }
 

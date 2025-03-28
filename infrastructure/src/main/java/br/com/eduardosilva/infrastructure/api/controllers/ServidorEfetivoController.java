@@ -41,13 +41,15 @@ public class ServidorEfetivoController implements ServidorAPI {
     private final UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase;
     private final UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase;
     private final BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase;
-    private final BuscarServidorEfetivoPorUnidadeId buscarServidorEfetivoPorUnidadeId;
-    private final BuscarEnderecoByNomeServidorUseCase buscarEnderecoByNomeServidorUseCase;
+
 
     public ServidorEfetivoController(
-            CreateServidorEfetivoUseCase createServidorEfetivoUseCase, CreateServidorTemporarioUseCase createServidorTemporarioUseCase,
+            CreateServidorEfetivoUseCase createServidorEfetivoUseCase,
+            CreateServidorTemporarioUseCase createServidorTemporarioUseCase,
             UploadFotoUseCase uploadFotoUseCase,
-            UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase, UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase, BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase, BuscarServidorEfetivoPorUnidadeId buscarServidorEfetivoPorUnidadeId, BuscarEnderecoByNomeServidorUseCase buscarEnderecoByNomeServidorUseCase
+            UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase,
+            UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase,
+            BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase
     ) {
         this.createServidorEfetivoUseCase = createServidorEfetivoUseCase;
         this.createServidorTemporarioUseCase = createServidorTemporarioUseCase;
@@ -55,8 +57,6 @@ public class ServidorEfetivoController implements ServidorAPI {
         this.updateServidorEfetivoUseCase = updateServidorEfetivoUseCase;
         this.updateServidorTemporarioUseCase = updateServidorTemporarioUseCase;
         this.buscarPessoaPorIdUseCase = buscarPessoaPorIdUseCase;
-        this.buscarServidorEfetivoPorUnidadeId = buscarServidorEfetivoPorUnidadeId;
-        this.buscarEnderecoByNomeServidorUseCase = buscarEnderecoByNomeServidorUseCase;
     }
 
     @Override
@@ -121,17 +121,7 @@ public class ServidorEfetivoController implements ServidorAPI {
         return PessoaApiPresenter.present(this.buscarPessoaPorIdUseCase.execute(aInput));
     }
 
-    @Override
-    public Pagination<BuscarServidorEfetivoPorUnidadeId.Output> buscarServidoresLotadosEmDeterminadaUnidade(int page, int perPage, Long unidadeId) {
-        final var input = new ServidorEfetivoPorUnidadeIdSearchQuery(page,perPage, new UnidadeId(unidadeId));
-        return this.buscarServidorEfetivoPorUnidadeId.execute(input);
-    }
 
-    @Override
-    public Pagination<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(int page, int perPage, String nomeParte) {
-        final var input = new EnderecoFuncionalPorNomeServidorSearch(page,perPage,nomeParte);
-        return buscarEnderecoByNomeServidorUseCase.execute(input);
-    }
 
     private Resource resourceOf(final MultipartFile part) {
         if (part == null) {

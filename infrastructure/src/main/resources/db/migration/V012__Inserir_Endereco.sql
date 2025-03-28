@@ -1,0 +1,16 @@
+INSERT INTO public.endereco (end_tipo_logradouro, end_logradouro, end_numero, end_bairro, cid_id) VALUES
+('Avenida', 'Paulista', 1578, 'Bela Vista', 1),
+('Rua', 'Visconde de Pirajá', 430, 'Ipanema', 2),
+('Avenida', 'Afonso Pena', 1200, 'Centro', 3),
+('Rua', 'Chile', 25, 'Centro Histórico', 4),
+('Avenida', 'Batel', 900, 'Batel', 5),
+('Avenida', 'Beira Mar', 1100, 'Centro', 6),
+('Rua', 'Boa Viagem', 215, 'Boa Viagem', 7),
+('Avenida', 'W3 Sul', 950, 'Asa Sul', 8),
+('Rua', 'Sete de Setembro', 450, 'Centro', 9),
+('Avenida', 'Marechal Floriano', 1300, 'São José', 10),
+('Rua', 'Afonso Pena', 500, 'Centro', 11),
+('Avenida', 'José Américo', 880, 'Manaíra', 12),
+('Rua', 'Alameda dos Anapurus', 720, 'Bacaba', 13),
+('Avenida', 'Largo do Machado', 1130, 'Largo do Machado', 14),
+('Rua', 'Rua 15 de Novembro', 300, 'Centro', 15);

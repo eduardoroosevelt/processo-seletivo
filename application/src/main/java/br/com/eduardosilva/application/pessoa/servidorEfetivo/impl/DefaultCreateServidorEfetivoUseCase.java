@@ -48,6 +48,10 @@ public class DefaultCreateServidorEfetivoUseCase extends CreateServidorEfetivoUs
             if(opPessoa.get().getServidorEfetivo() != null){
                 throw DomainException.with("Pessoa já cadastrada como servidor efetivo ");
             }
+
+            if(opPessoa.get().getServidorTemporario() != null && opPessoa.get().getServidorTemporario().getStDataDemissao() == null){
+                throw DomainException.with("Pessoa é um servidor temporário que não tem data de demissão. Favor preencher a data de demissão primeiro. ");
+            }
             pessoa = opPessoa.get();
 
             if(enderecos!= null){

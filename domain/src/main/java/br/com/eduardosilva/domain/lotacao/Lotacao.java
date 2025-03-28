@@ -1,6 +1,7 @@
 package br.com.eduardosilva.domain.lotacao;
 
 import br.com.eduardosilva.domain.Entity;
+import br.com.eduardosilva.domain.exceptions.DomainException;
 import br.com.eduardosilva.domain.pessoa.Pessoa;
 import br.com.eduardosilva.domain.pessoa.ServidorEfetivo;
 import br.com.eduardosilva.domain.pessoa.ServidorTemporario;
@@ -15,6 +16,7 @@ public class Lotacao extends Entity<LotacaoId> {
     private LocalDate lotDataLotacao;
     private LocalDate lotDataRemocao;
     private String lotPortaria;
+
 
     public Lotacao(LotacaoId lotacaoId, Pessoa pessoa, Unidade unidade, LocalDate lotDataLotacao, LocalDate lotDataRemocao, String lotPortaria) {
         super(lotacaoId);
@@ -67,6 +69,10 @@ public class Lotacao extends Entity<LotacaoId> {
     }
 
     private void setLotDataRemocao(LocalDate lotDataRemocao) {
+        if (lotDataRemocao != null && lotDataRemocao.isBefore(this.lotDataLotacao) ) {
+            DomainException.with("Data de remoção não pode ser anterior a data de lotação");
+        }
+
         this.lotDataRemocao = lotDataRemocao;
     }
 
@@ -76,7 +82,6 @@ public class Lotacao extends Entity<LotacaoId> {
         }
         this.lotPortaria = lotPortaria;
     }
-
 
     public Lotacao updatePessoa(Pessoa pessoa) {
         setPessoa(pessoa);
@@ -88,18 +93,20 @@ public class Lotacao extends Entity<LotacaoId> {
         return this;
     }
 
-    public Lotacao updateLotDataLotacao(LocalDate lotDataLotacao) {
-        setLotDataLotacao(lotDataLotacao);
-        return this;
-    }
-
-    public Lotacao updateLotDataRemocao(LocalDate lotDataRemocao) {
-        setLotDataRemocao(lotDataRemocao);
-        return this;
-    }
-
     public Lotacao updateLotPortaria(String lotPortaria) {
         setLotPortaria(lotPortaria);
+        return this;
+    }
+
+    public  Lotacao updateDataLotacaoERemocao(LocalDate lotDataLotacao,LocalDate lotDataRemocao){
+
+        if(lotDataRemocao != null && lotDataLotacao != null && lotDataLotacao.isAfter(lotDataRemocao)){
+            DomainException.with("Data de admissão não pode ser posterior a data de demissão");
+        }
+
+        setLotDataLotacao(lotDataLotacao);
+        setLotDataRemocao(lotDataRemocao);
+
         return this;
     }
 }

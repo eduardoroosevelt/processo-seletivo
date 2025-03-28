@@ -44,11 +44,8 @@ public class ServidorTemporario {
             DomainException.with("Data de admissão não pode ser posterior a data de demissão");
         }
 
-        setStDataDemissao(stDataDemissao);
         setStDataAdmissao(stDataAdmissao);
-
-
-
+        setStDataDemissao(stDataDemissao);
 
         return this;
     }
