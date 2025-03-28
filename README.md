@@ -1,3 +1,10 @@
+# Inscrição do candidato:
+
+### Número da inscrição: 8209
+### CPF: 05921855162
+### Perfil: DESENVOLVEDOR JAVA (BACK-END) - SÊNIOR
+### Contato: (65) 9 9229-0278
+
 # Projeto: Sistema de Gestão com Clean Architecture
 
 Este projeto é uma aplicação desenvolvida com **Spring Boot** utilizando **Java 17**, seguindo os princípios de **Clean Architecture** e **DDD**. Ele integra tecnologias modernas como **MinIO**, **PostgreSQL** e **NGINX** para oferecer uma solução robusta e escalável.
