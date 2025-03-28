@@ -5,7 +5,7 @@ services:
     restart: always
     tty: true
     volumes:
-      - ./Docker-Compose/PostgreSQL:/var/lib/postgresql/data
+      - .docker/PostgreSQL:/var/lib/postgresql/data
     ports:
       - 5432:5432
     healthcheck:
@@ -20,7 +20,19 @@ services:
       - POSTGRES_DB=seletivo
     networks:
       - mynetwork
-
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        sleep 10;
+        mc alias set myminio http://minio:9000 admin123 strongpassword123;
+        mc ls myminio/testebucket || mc mb myminio/testebucket;
+        mc policy set public myminio/testebucket;
+      "
+    networks:
+      - mynetwork
   minio:
     image: minio/minio:latest
     container_name: minio
@@ -33,7 +45,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     volumes:
-      - minio_data:/data
+      - .docker/minio:/data
     command:  minio server /data  --console-address ':9001'
     restart: always
     networks:
@@ -75,9 +87,6 @@ services:
     networks:
       - mynetwork
 
-volumes:
-  minio_data:
-    driver: local
 
 networks:
   mynetwork:
