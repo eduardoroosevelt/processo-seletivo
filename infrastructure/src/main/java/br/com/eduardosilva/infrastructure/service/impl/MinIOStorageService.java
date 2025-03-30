@@ -2,15 +2,19 @@ package br.com.eduardosilva.infrastructure.service.impl;
 
 import br.com.eduardosilva.infrastructure.service.StorageService;
 import br.com.eduardosilva.domain.shared.Resource;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
+import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,9 +95,22 @@ public class MinIOStorageService implements StorageService {
 
     @Override
     public void deleteAll(List<String> ids) {
-        final var idsArg = ids.stream().map(id -> new DeleteObject(id)).toList();
-        RemoveObjectsArgs rmvArg= RemoveObjectsArgs.builder().bucket(bucket).objects(idsArg).build();
-        minioClient.removeObjects(rmvArg);
+        try {
+            List<DeleteObject> idsArg = new LinkedList<>();
+
+            for(String id : ids){
+                idsArg.add(new DeleteObject(id));
+            }
+            RemoveObjectsArgs rmvArg= RemoveObjectsArgs.builder().bucket(bucket).objects(idsArg).build();
+            Iterable<Result<DeleteError>> results = minioClient.removeObjects(rmvArg);
+            for (Result<DeleteError> result : results) {
+                DeleteError error = result.get();
+                System.out.println(
+                        "Error in deleting object " + error.objectName() + "; " + error.message());
+            }
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e);
+        }
     }
 
     @Override

@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/teste")
 public class TesteMinIOController {
@@ -37,6 +39,11 @@ public class TesteMinIOController {
                 .header(HttpHeaders.CONTENT_TYPE, body.get().contentType()) // Definindo o tipo de conteúdo no header
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + body.get().name()) // Definindo o nome do arquivo
                 .body(body.get().content());
+    }
+
+    @DeleteMapping("")
+    public void delete(@RequestParam String id){
+        storage.deleteAll(List.of(id));
     }
 
     @GetMapping("/link-temporario/{id}")

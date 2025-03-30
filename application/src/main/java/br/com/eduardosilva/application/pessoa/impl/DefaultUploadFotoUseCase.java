@@ -31,7 +31,7 @@ public class DefaultUploadFotoUseCase extends UploadFotoUseCase {
         List<String> links = new ArrayList<>();
         input.fotos().forEach(f ->{
             final var  foto = mediaResourceGateway.storeImage(aPessoa.id(),f);
-            links.add(mediaResourceGateway.generateTemporaryLink(aPessoa.id().value().toString()));
+            links.add(mediaResourceGateway.generateTemporaryLink(foto.getFpBucket()));
             aPessoa.append(foto);
         });
 

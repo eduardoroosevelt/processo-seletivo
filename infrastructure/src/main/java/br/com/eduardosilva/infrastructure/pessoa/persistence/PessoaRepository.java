@@ -44,7 +44,7 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
 
     @Query("""
                 SELECT 
-                     new br.com.eduardosilva.domain.pessoa.EnderecoFuncionalPorNomeServidorPreview(
+                     distinct new br.com.eduardosilva.domain.pessoa.EnderecoFuncionalPorNomeServidorPreview(
                         e.endTipoLogradouro, 
                         e.endLogradouro, 
                         e.endNumero, 
@@ -60,5 +60,5 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
                     JOIN e.cidade c 
                 WHERE p.pesNome LIKE concat('%', :nome  , '%') 
             """)
-    Page<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(String s, PageRequest page);
+    Page<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(String nome, PageRequest page);
 }
