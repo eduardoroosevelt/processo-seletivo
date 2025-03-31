@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,11 @@ import java.util.Date;
 
 @Component
 public class JwtServiceImpl implements JwtService {
+    @Value("${seletivo.jwt.expiration-access-token}")
+    private  long jwtExpirationInMs; //300000L;
 
-    private final long jwtExpirationInMs = 300000L; // tempo de expiração do token em milissegundos (5 min)
-    private final long refreshTokenExpirationInMs = 86400000L; // 1 dias de expiração para o refresh token
+    @Value("${seletivo.jwt.expiration-refresh-token}")
+    private  long refreshTokenExpirationInMs;
     private final SecretKey key = Jwts.SIG.HS256.key().build();
     private final SecretKey keyRefresh = Jwts.SIG.HS256.key().build();
 

@@ -69,6 +69,8 @@ services:
       S3_ACCESS_KEY: admin123
       S3_ACCESS_SECRET: strongpassword123
       S3_BUCKET_NAME: testebucket
+      JWT_EXPIRATION_ACCES_TOKEN: 300000
+      JWT_EXPIRATION_REFRESH_TOKEN: 86400000
     depends_on:
       db:
         condition: service_healthy

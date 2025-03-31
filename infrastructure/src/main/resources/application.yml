@@ -38,7 +38,9 @@ seletivo:
   user:
     username: admin
     password: password
-
+  jwt:
+    expiration-access-token: ${JWT_EXPIRATION_ACCES_TOKEN:30000000000}
+    expiration-refresh-token:  ${JWT_EXPIRATION_REFRESH_TOKEN:86400000}
 
 server:
   port: 8083

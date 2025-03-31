@@ -6,6 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface CidadeRepository extends JpaRepository<CidadeJpaEntity,Long> {
 
     @Query("""
@@ -22,4 +25,7 @@ public interface CidadeRepository extends JpaRepository<CidadeJpaEntity,Long> {
                :uf is null or UPPER(c.uf) like  concat('%', :uf   , '%')
             """)
     Page<CidadePreview> findAll(String nome, String uf, Pageable page);
+
+    @Query(value = "select e.id from CidadeJpaEntity e where e.id in :ids")
+    Optional<Long> existsByIds(List<Long> ids);
 }

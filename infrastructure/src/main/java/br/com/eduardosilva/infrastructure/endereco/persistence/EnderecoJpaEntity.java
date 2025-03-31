@@ -3,6 +3,8 @@ package br.com.eduardosilva.infrastructure.endereco.persistence;
 import br.com.eduardosilva.infrastructure.cidade.persistence.CidadeJpaEntity;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "endereco")
 public class EnderecoJpaEntity {
@@ -75,5 +77,16 @@ public class EnderecoJpaEntity {
 
     public void setCidade(CidadeJpaEntity cidade) {
         this.cidade = cidade;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof EnderecoJpaEntity that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(endTipoLogradouro, that.endTipoLogradouro) && Objects.equals(endLogradouro, that.endLogradouro) && Objects.equals(endNumero, that.endNumero) && Objects.equals(endBairro, that.endBairro) && Objects.equals(cidade, that.cidade);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, endTipoLogradouro, endLogradouro, endNumero, endBairro, cidade);
     }
 }

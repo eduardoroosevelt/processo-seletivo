@@ -16,6 +16,7 @@ import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorT
 import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultCreateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultUpdateServidorTemporarioUseCase;
+import br.com.eduardosilva.domain.cidade.CidadeGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import br.com.eduardosilva.domain.pessoa.MediaResourceGateway;
 import br.com.eduardosilva.domain.pessoa.PessoaGateway;
@@ -27,16 +28,18 @@ public class PessoaUseCaseConfig {
     private final PessoaGateway pessoaGateway;
     private final EnderecoGateway enderecoGateway;
     private final MediaResourceGateway mediaResourceGateway;
+    private final CidadeGateway cidadeGateway;
 
-    public PessoaUseCaseConfig(PessoaGateway pessoaGateway, EnderecoGateway enderecoGateway, MediaResourceGateway mediaResourceGateway) {
+    public PessoaUseCaseConfig(PessoaGateway pessoaGateway, EnderecoGateway enderecoGateway, MediaResourceGateway mediaResourceGateway, CidadeGateway cidadeGateway) {
         this.pessoaGateway = pessoaGateway;
         this.enderecoGateway = enderecoGateway;
         this.mediaResourceGateway = mediaResourceGateway;
+        this.cidadeGateway = cidadeGateway;
     }
 
     @Bean
     public CreateServidorEfetivoUseCase servidorEfetivoUseCase(){
-        return new DefaultCreateServidorEfetivoUseCase(pessoaGateway,enderecoGateway);
+        return new DefaultCreateServidorEfetivoUseCase(pessoaGateway,enderecoGateway,cidadeGateway);
     }
 
     @Bean
@@ -46,17 +49,17 @@ public class PessoaUseCaseConfig {
 
     @Bean
     public UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase(){
-        return new DefaultUpdateServidorEfetivoUseCase(pessoaGateway,enderecoGateway);
+        return new DefaultUpdateServidorEfetivoUseCase(pessoaGateway,enderecoGateway,cidadeGateway);
     }
 
     @Bean
     public CreateServidorTemporarioUseCase createServidorTemporarioUseCase(){
-        return new DefaultCreateServidorTemporarioUseCase(pessoaGateway,enderecoGateway);
+        return new DefaultCreateServidorTemporarioUseCase(pessoaGateway,enderecoGateway,cidadeGateway);
     }
 
     @Bean
     public UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase(){
-        return new DefaultUpdateServidorTemporarioUseCase(pessoaGateway,enderecoGateway);
+        return new DefaultUpdateServidorTemporarioUseCase(pessoaGateway,enderecoGateway,cidadeGateway);
     }
 
     @Bean

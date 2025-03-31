@@ -15,7 +15,7 @@ public class UnidadeEnderecoJpaEntityId implements Serializable {
     @Column(name = "end_id", nullable = false)
     private Long endereco;
 
-    public Long getendereco() {
+    public Long getEndereco() {
         return endereco;
     }
 
@@ -25,9 +25,11 @@ public class UnidadeEnderecoJpaEntityId implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof UnidadeEnderecoJpaEntityId)) return false;
         UnidadeEnderecoJpaEntityId that = (UnidadeEnderecoJpaEntityId) o;
-        return Objects.equals(unidade, that.unidade) && Objects.equals(endereco, that.endereco);
+        return Objects.equals(unidade, that.unidade) &&
+                Objects.equals(endereco, that.endereco);
     }
 
     @Override
@@ -42,4 +44,6 @@ public class UnidadeEnderecoJpaEntityId implements Serializable {
     public void setunidade(Long unidade) {
         this.unidade = unidade;
     }
+
+
 }

@@ -2,12 +2,17 @@ package br.com.eduardosilva.application.pessoa.servidorEfetivo.impl;
 
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 import br.com.eduardosilva.domain.Identifier;
+import br.com.eduardosilva.domain.cidade.Cidade;
+import br.com.eduardosilva.domain.cidade.CidadeGateway;
+import br.com.eduardosilva.domain.cidade.CidadeId;
+import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.exceptions.DomainException;
 import br.com.eduardosilva.domain.pessoa.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,14 +20,14 @@ import java.util.stream.Collectors;
 public class DefaultCreateServidorEfetivoUseCase extends CreateServidorEfetivoUseCase {
 
     private final PessoaGateway servidorEfetivoGateway;
-    private final EnderecoGateway enderecoGateway;
+    private final CidadeGateway cidadeGateway;
 
     public DefaultCreateServidorEfetivoUseCase(
             PessoaGateway servidorEfetivoGateway,
-            EnderecoGateway enderecoGateway
+            EnderecoGateway enderecoGateway, CidadeGateway cidadeGateway
     ) {
         this.servidorEfetivoGateway = servidorEfetivoGateway;
-        this.enderecoGateway = enderecoGateway;
+        this.cidadeGateway = cidadeGateway;
     }
 
     @Override
@@ -34,12 +39,19 @@ public class DefaultCreateServidorEfetivoUseCase extends CreateServidorEfetivoUs
                 input.pesDataNascimento()
         );
 
-        Set<EnderecoID> enderecos=null;
+        List<Endereco> enderecos= input.enderecos().stream().map(er -> {
+                Cidade cidade = cidadeGateway.cidadeOfId(new CidadeId(er.cidadeId()))
+                        .orElseThrow(() -> DomainException.with("Cidade com id %s não pode ser encontrado".formatted(er.cidadeId())));
 
-        if(input.enderecos() != null){
-            enderecos = input.enderecos().stream().map(EnderecoID::new).collect(Collectors.toSet());
-            validateEnderecos(enderecos);
-        }
+                return new Endereco(
+                EnderecoID.empty(),
+                er.endTipoLogradouro(),
+                er.endLogradouro(),
+                er.endNumero(),
+                er.endBairro(),
+                cidade);
+
+        }).collect(Collectors.toList());
 
         ServidorEfetivo servidorEfetivo = new ServidorEfetivo(input.matricula());
         Pessoa pessoa;
@@ -54,7 +66,7 @@ public class DefaultCreateServidorEfetivoUseCase extends CreateServidorEfetivoUs
             }
             pessoa = opPessoa.get();
 
-            if(enderecos!= null){
+            if(!enderecos.isEmpty()){
                 enderecos.addAll(pessoa.getEnderecos());
                 pessoa.updateEnderecos(enderecos);
             }
@@ -80,12 +92,12 @@ public class DefaultCreateServidorEfetivoUseCase extends CreateServidorEfetivoUs
 
     record StdOutput(PessoaId pesId) implements CreateServidorEfetivoUseCase.Output {}
 
-    private void validateEnderecos(final Set<EnderecoID> ids){
+    private void validateCidade(final Set<CidadeId> ids){
         if (ids == null || ids.isEmpty()) {
             return ;
         }
 
-        final var retrievedIds = enderecoGateway.existsByIds(ids);
+        final var retrievedIds = cidadeGateway.existsByIds(ids);
 
         if (ids.size() != retrievedIds.size()) {
             final var missingIds = new ArrayList<>(ids);
@@ -96,8 +108,10 @@ public class DefaultCreateServidorEfetivoUseCase extends CreateServidorEfetivoUs
                     .map(id ->id.toString())
                     .collect(Collectors.joining(", "));
 
-            throw DomainException.with("Alguns Endereços não pode ser encontrado: %s".formatted(missingIdsMessage) );
+            throw DomainException.with("Algumas cidades não pode ser encontrado: %s".formatted(missingIdsMessage) );
         }
     }
+
+
 
 }

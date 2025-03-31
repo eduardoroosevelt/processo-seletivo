@@ -2,6 +2,7 @@ package br.com.eduardosilva.infrastructure.cidade;
 
 import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.cidade.*;
+import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.infrastructure.cidade.persistence.CidadeJpaEntity;
 import br.com.eduardosilva.infrastructure.cidade.persistence.CidadeRepository;
 import br.com.eduardosilva.infrastructure.mapper.CidadeMapper;
@@ -9,7 +10,9 @@ import br.com.eduardosilva.infrastructure.util.SqlUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Component
 public class CidadePostgresGateway implements CidadeGateway {
@@ -60,6 +63,17 @@ public class CidadePostgresGateway implements CidadeGateway {
                 actualPage.getTotalElements(),
                 actualPage.toList()
         );
+    }
+
+    @Override
+    public List<CidadeId> existsByIds(Iterable<CidadeId> cidadeIds) {
+        final var ids = StreamSupport.stream(cidadeIds.spliterator(), false)
+                .map(CidadeId::value)
+                .toList();
+
+        return this.cidadeRepository.existsByIds(ids).stream()
+                .map(CidadeId::new)
+                .toList();
     }
 
     @Override

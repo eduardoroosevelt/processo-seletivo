@@ -27,8 +27,8 @@ public class Cidade extends Entity<CidadeId> {
     }
 
     public void setNome(String nome) {
-        assertArgumentNotNull(nome,"Nome não deve ser nul");
-        assertArgumentNotEmpty(nome,"Nome não deve ser vazio");
+        assertArgumentNotNull(nome,"Nome da cidade não deve ser nul");
+        assertArgumentNotEmpty(nome,"Nome da cidade não deve ser vazio");
         this.nome = nome;
     }
 

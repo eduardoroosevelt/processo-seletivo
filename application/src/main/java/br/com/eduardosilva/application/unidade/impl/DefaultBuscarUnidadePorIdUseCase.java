@@ -1,6 +1,7 @@
 package br.com.eduardosilva.application.unidade.impl;
 
 import br.com.eduardosilva.application.unidade.BuscarUnidadePorIdUseCase;
+import br.com.eduardosilva.domain.Entity;
 import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.exceptions.DomainException;
@@ -10,6 +11,7 @@ import br.com.eduardosilva.domain.unidade.UnidadeGateway;
 import br.com.eduardosilva.domain.unidade.UnidadeId;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DefaultBuscarUnidadePorIdUseCase extends BuscarUnidadePorIdUseCase {
 
@@ -42,7 +44,7 @@ public class DefaultBuscarUnidadePorIdUseCase extends BuscarUnidadePorIdUseCase 
                     out.id(),
                     out.getNome(),
                     out.getSigla(),
-                    out.getEnderecos()
+                    out.getEnderecos().stream().map(Entity::id).collect(Collectors.toSet())
             );
         }
     }
