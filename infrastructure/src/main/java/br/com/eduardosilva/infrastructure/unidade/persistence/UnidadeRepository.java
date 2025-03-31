@@ -1,11 +1,15 @@
 package br.com.eduardosilva.infrastructure.unidade.persistence;
 
+import br.com.eduardosilva.domain.Pagination;
+import br.com.eduardosilva.domain.unidade.Unidade;
 import br.com.eduardosilva.domain.unidade.UnidadePreview;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
 
 public interface UnidadeRepository extends JpaRepository<UnidadeJpaEntity,Long> {
 
@@ -26,4 +30,12 @@ public interface UnidadeRepository extends JpaRepository<UnidadeJpaEntity,Long> 
             @Param("nomeUni")  String nomeUni,
             @Param("siglaUni") String siglaUni,
             Pageable pageable);
+
+    @Query("""
+            select u from UnidadeJpaEntity u
+            where 
+                UPPER(u.nome) = :nome
+                and UPPER(u.sigla) = :sigla
+            """)
+    Optional<UnidadeJpaEntity> existeUnidade(String nome, String sigla);
 }

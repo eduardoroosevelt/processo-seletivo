@@ -3,6 +3,7 @@ package br.com.eduardosilva.application.pessoa.impl;
 import br.com.eduardosilva.application.endereco.BuscarEnderecoPorIdUseCase;
 import br.com.eduardosilva.application.endereco.impl.DefaultiBuscarEnderecoPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
+import br.com.eduardosilva.domain.Entity;
 import br.com.eduardosilva.domain.cidade.Cidade;
 import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
@@ -55,7 +56,7 @@ public class DefaultBuscarPessoaPorIdUseCase extends BuscarPessoaPorIdUseCase {
                   pessoa.getPesPai(),
                   pessoa.getServidorTemporario(),
                   pessoa.getServidorEfetivo(),
-                  pessoa.getEnderecos(),
+                  pessoa.getEnderecos().stream().map(Entity::id).collect(Collectors.toSet()),
                   pessoa.getFotos()
                           .stream()
                           .map(f->mediaResourceGateway.generateTemporaryLink(f.getFpBucket()))

@@ -28,6 +28,7 @@ public class UnidadePostgreGateway implements UnidadeGateway {
     }
 
     @Override
+    @Transactional()
     public Unidade save(final Unidade unidade) {
         UnidadeJpaEntity unidadeJpaEntity = UnidadeMapper.INSTANCE.unidadeToUnidadeJpaEntity(unidade);
         unidadeJpaEntity = unidadeRepository.save(unidadeJpaEntity);
@@ -72,5 +73,14 @@ public class UnidadePostgreGateway implements UnidadeGateway {
         if (this.unidadeRepository.existsById(uniId)) {
             this.unidadeRepository.deleteById(uniId);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Unidade> existeUnidade(String nome, String sigla) {
+        return this.unidadeRepository.existeUnidade(
+                SqlUtils.upper(nome),
+                SqlUtils.upper(sigla)
+        ).map(UnidadeMapper.INSTANCE::unidadeJpaEntityToUnidade);
     }
 }

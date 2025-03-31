@@ -1,8 +1,10 @@
 package br.com.eduardosilva.infrastructure.pessoa.models;
 
+import br.com.eduardosilva.application.UpdateEnderecoCommand;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 public record UpdateServidorTemporarioRequest(
@@ -12,7 +14,7 @@ public record UpdateServidorTemporarioRequest(
         String pesSexo,
         String pesMae,
         String pesPai,
-        Set<Long> enderecos,
+        List<UpdateEnderecoCommand> enderecos,
         LocalDate stDataDemissao,
         LocalDate stDataAdmissao
 ) implements UpdateServidorTemporarioUseCase.Input {

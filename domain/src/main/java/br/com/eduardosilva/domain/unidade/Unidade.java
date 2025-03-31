@@ -2,22 +2,21 @@ package br.com.eduardosilva.domain.unidade;
 
 import br.com.eduardosilva.domain.Entity;
 import br.com.eduardosilva.domain.cidade.Cidade;
+import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Unidade extends Entity<UnidadeId> {
 
     private String nome;
     private String sigla;
-    private Set<EnderecoID> enderecos;
+    private List<Endereco> enderecos;
 
     public Unidade(UnidadeId unidadeId,
                     String nome,
                     String sigla,
-                   Set<EnderecoID> enderecos
+                   List<Endereco> enderecos
                     ) {
 
         super(unidadeId);
@@ -35,8 +34,8 @@ public class Unidade extends Entity<UnidadeId> {
         return sigla;
     }
 
-    public Set<EnderecoID> getEnderecos() {
-        return enderecos != null ? Collections.unmodifiableSet(enderecos) : Collections.emptySet();
+    public List<Endereco> getEnderecos() {
+        return enderecos != null ? Collections.unmodifiableList(enderecos) : Collections.emptyList();
     }
 
     private void setNome(String nome) {
@@ -59,8 +58,8 @@ public class Unidade extends Entity<UnidadeId> {
         this.sigla = sigla;
     }
 
-    private void setEnderecos(Set<EnderecoID> enderecos) {
-        this.enderecos = enderecos != null ? new HashSet<>(enderecos) : Collections.emptySet();
+    private void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos != null ? new ArrayList<>(enderecos) : Collections.emptyList();
     }
 
     public Unidade updateNome(String nome) {
@@ -73,7 +72,7 @@ public class Unidade extends Entity<UnidadeId> {
         return this;
     }
 
-    public Unidade updateEnderecos(Set<EnderecoID> enderecos) {
+    public Unidade updateEnderecos(List<Endereco> enderecos) {
         setEnderecos(enderecos);
         return this;
     }

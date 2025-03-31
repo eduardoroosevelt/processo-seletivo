@@ -13,6 +13,8 @@ import br.com.eduardosilva.domain.pessoa.PessoaId;
 import br.com.eduardosilva.domain.unidade.UnidadeGateway;
 import br.com.eduardosilva.domain.unidade.UnidadeId;
 
+import java.util.Optional;
+
 public class DefaultUpdateLotacaoUseCase extends UpdateLotacaoUseCase {
     private final LotacaoGateway lotacaoGateway;
     private final PessoaGateway pessoaGateway;
@@ -29,6 +31,22 @@ public class DefaultUpdateLotacaoUseCase extends UpdateLotacaoUseCase {
 
     @Override
     public Output execute(Input input) {
+
+        final Optional<Lotacao> opLotacao= lotacaoGateway.existeLotacao(
+                new PessoaId( input.pesId()),
+                new UnidadeId(input.unidId()),
+                input.lotDataLotacao(),
+                input.lotDataRemocao(),
+                input.lotPortaria()
+        );
+
+        if(opLotacao.isPresent()){
+            if (!opLotacao.get().id().equals(new LotacaoId(input.lotId()))){
+                throw  DomainException.with("Já existe uma lotação com os mesmos dados");
+            }
+
+        }
+
 
         final Lotacao aLotacao = this.lotacaoGateway.lotacaoOfId(new LotacaoId(input.lotId()))
                 .orElseThrow(() -> NotFoundException.with("Locatação com id %s não pode ser encontrado".formatted(input.lotId())));

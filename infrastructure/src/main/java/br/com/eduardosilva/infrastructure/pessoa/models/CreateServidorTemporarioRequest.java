@@ -1,8 +1,10 @@
 package br.com.eduardosilva.infrastructure.pessoa.models;
 
+import br.com.eduardosilva.application.CreateEnderecoCommand;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 public record CreateServidorTemporarioRequest(
@@ -11,7 +13,7 @@ public record CreateServidorTemporarioRequest(
         String pesSexo,
         String pesMae,
         String pesPai,
-        Set<Long> enderecos,
+        List<CreateEnderecoCommand> enderecos,
         LocalDate stDataDemissao,
         LocalDate stDataAdmissao
 ) implements CreateServidorTemporarioUseCase.Input {

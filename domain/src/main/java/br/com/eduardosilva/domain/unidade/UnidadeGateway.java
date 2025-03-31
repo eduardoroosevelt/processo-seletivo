@@ -11,4 +11,6 @@ public interface UnidadeGateway {
     Pagination<UnidadePreview> findAll(UnidadeSearchQuery search);
 
     void delete(UnidadeId unidadeId);
+
+    Optional<Unidade> existeUnidade(String nome, String sigla);
 }

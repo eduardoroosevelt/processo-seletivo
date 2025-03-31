@@ -37,6 +37,7 @@ public class PessoaPostgresGateway implements PessoaGateway {
     }
 
     @Override
+    @Transactional()
     public Pessoa save(Pessoa pessoa) {
         final PessoaJpaEntity pessoaJpaEntity= PessoaMapper.INSTANCE.pessoaToPessoaJpaEntity(pessoa);
 

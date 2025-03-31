@@ -4,6 +4,10 @@ import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfet
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultCreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
 import br.com.eduardosilva.domain.Identifier;
+import br.com.eduardosilva.domain.cidade.Cidade;
+import br.com.eduardosilva.domain.cidade.CidadeGateway;
+import br.com.eduardosilva.domain.cidade.CidadeId;
+import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.exceptions.DomainException;
@@ -13,6 +17,7 @@ import br.com.eduardosilva.domain.pessoa.PessoaId;
 import br.com.eduardosilva.domain.pessoa.ServidorTemporario;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,14 +26,17 @@ public class DefaultCreateServidorTemporarioUseCase extends CreateServidorTempor
 
     private final PessoaGateway pessoaGateway;
     private final EnderecoGateway enderecoGateway;
+    private final CidadeGateway cidadeGateway;
 
-    public DefaultCreateServidorTemporarioUseCase(PessoaGateway pessoaGateway, EnderecoGateway enderecoGateway) {
+    public DefaultCreateServidorTemporarioUseCase(PessoaGateway pessoaGateway, EnderecoGateway enderecoGateway, CidadeGateway cidadeGateway) {
         this.pessoaGateway = pessoaGateway;
         this.enderecoGateway = enderecoGateway;
+        this.cidadeGateway = cidadeGateway;
     }
 
     @Override
     public Output execute(Input input) {
+
         final Optional<Pessoa> opPessoa=pessoaGateway.existePessoa(
                 input.pesNome(),
                 input.pesPai(),
@@ -36,11 +44,20 @@ public class DefaultCreateServidorTemporarioUseCase extends CreateServidorTempor
                 input.pesDataNascimento()
         );
 
-        Set<EnderecoID> enderecos=null;
-        if(input.enderecos() != null){
-            enderecos = input.enderecos().stream().map(EnderecoID::new).collect(Collectors.toSet());
-            validateEnderecos(enderecos);
-        }
+
+        List<Endereco> enderecos= input.enderecos().stream().map(er -> {
+            Cidade cidade = cidadeGateway.cidadeOfId(new CidadeId(er.cidadeId()))
+                    .orElseThrow(() -> DomainException.with("Cidade com id %s não pode ser encontrado".formatted(er.cidadeId())));
+
+            return new Endereco(
+                    EnderecoID.empty(),
+                    er.endTipoLogradouro(),
+                    er.endLogradouro(),
+                    er.endNumero(),
+                    er.endBairro(),
+                    cidade);
+
+        }).collect(Collectors.toList());
 
         ServidorTemporario servidorTemp = new ServidorTemporario(input.stDataAdmissao(),input.stDataDemissao());
         Pessoa pessoa;
@@ -54,7 +71,7 @@ public class DefaultCreateServidorTemporarioUseCase extends CreateServidorTempor
             pessoa = opPessoa.get();
             pessoa.updateServidorTemporario(servidorTemp);
 
-            if(enderecos!= null){
+            if(!enderecos.isEmpty()){
                 enderecos.addAll(pessoa.getEnderecos());
                 pessoa.updateEnderecos(enderecos);
             }

@@ -1,12 +1,11 @@
 package br.com.eduardosilva.domain.pessoa;
 
 import br.com.eduardosilva.domain.Entity;
+import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Pessoa extends Entity<PessoaId> {;
 
@@ -20,7 +19,7 @@ public class Pessoa extends Entity<PessoaId> {;
 
     private String pesPai;
 
-    private Set<EnderecoID> enderecos;
+    private List<Endereco> enderecos;
 
     private ServidorTemporario servidorTemporario;
 
@@ -35,7 +34,7 @@ public class Pessoa extends Entity<PessoaId> {;
                   String pesSexo,
                   String pesMae,
                   String pesPai,
-                  Set<EnderecoID> enderecos,
+                  List<Endereco> enderecos,
                   Set<PessoaFoto> fotos) {
 
         super(pessoaId);
@@ -68,8 +67,8 @@ public class Pessoa extends Entity<PessoaId> {;
         return pesPai;
     }
 
-    public Set<EnderecoID> getEnderecos() {
-        return enderecos != null ? Collections.unmodifiableSet(enderecos) : Collections.emptySet();
+    public List<Endereco> getEnderecos() {
+        return enderecos != null ? Collections.unmodifiableList(enderecos) : Collections.emptyList();
     }
 
     public ServidorEfetivo getServidorEfetivo() {
@@ -166,8 +165,8 @@ public class Pessoa extends Entity<PessoaId> {;
         }
     }
 
-    private void setEnderecos(Set<EnderecoID> enderecos) {
-        this.enderecos = enderecos != null ? new HashSet<>(enderecos) : new HashSet<>();
+    private void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos != null ? new ArrayList<>(enderecos) : new ArrayList<>();
     }
 
     public ServidorTemporario getServidorTemporario() {
@@ -197,7 +196,7 @@ public class Pessoa extends Entity<PessoaId> {;
         fotos.add(foto);
     }
 
-    public Pessoa updateEnderecos(Set<EnderecoID> endereco) {
+    public Pessoa updateEnderecos(List<Endereco> endereco) {
         setEnderecos(endereco);
         return this;
     }

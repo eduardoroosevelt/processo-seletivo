@@ -2,6 +2,8 @@ package br.com.eduardosilva.infrastructure.lotacao;
 
 import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.lotacao.*;
+import br.com.eduardosilva.domain.pessoa.PessoaId;
+import br.com.eduardosilva.domain.unidade.UnidadeId;
 import br.com.eduardosilva.infrastructure.mapper.LotacaoMapper;
 import br.com.eduardosilva.infrastructure.lotacao.persistence.LotacaoJpaEntity;
 import br.com.eduardosilva.infrastructure.lotacao.persistence.LotacaoRepository;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
@@ -69,5 +72,17 @@ public class LotacaoPostgresGateway implements LotacaoGateway {
         if (this.lotacaoRepository.existsById(aLotacaoId)) {
             this.lotacaoRepository.deleteById(aLotacaoId);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Lotacao> existeLotacao(PessoaId pesId, UnidadeId unidId, LocalDate lotDataLotacao, LocalDate lotDataRemocao, String lotPortaria) {
+        return this.lotacaoRepository.existeLotacao(
+                pesId.value(),
+                unidId.value(),
+                lotDataLotacao,
+                lotDataRemocao,
+                SqlUtils.upper(lotPortaria)
+        ).map(LotacaoMapper.INSTANCE::lotacaJpaEntityToLotacao);
     }
 }

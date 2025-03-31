@@ -1,8 +1,10 @@
 package br.com.eduardosilva.application.unidade;
 
+import br.com.eduardosilva.application.UpdateEnderecoCommand;
 import br.com.eduardosilva.application.UseCase;
 import br.com.eduardosilva.domain.unidade.UnidadeId;
 
+import java.util.List;
 import java.util.Set;
 
 public abstract class UpdateUnidadeUseCase extends UseCase<UpdateUnidadeUseCase.Input,UpdateUnidadeUseCase.Output> {
@@ -11,7 +13,7 @@ public abstract class UpdateUnidadeUseCase extends UseCase<UpdateUnidadeUseCase.
         Long unidadeId();
         String nome();
         String sigla();
-        Set<Long> enderecos();
+        List<UpdateEnderecoCommand> enderecos();
     }
 
     public interface Output{

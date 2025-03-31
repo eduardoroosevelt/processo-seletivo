@@ -1,6 +1,8 @@
 package br.com.eduardosilva.infrastructure.mapper;
 
 
+import br.com.eduardosilva.domain.cidade.Cidade;
+import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.pessoa.Pessoa;
 import br.com.eduardosilva.domain.pessoa.PessoaFoto;
@@ -14,6 +16,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,29 +47,53 @@ public interface PessoaMapper {
                 .collect(Collectors.toSet());
     }
 
-    default Set<EnderecoID> mapEnderecosId(Set<PessoaEnderecoJpaEntity> enderecos){
+    default List<Endereco> mapEnderecosId(Set<PessoaEnderecoJpaEntity> enderecos){
         return enderecos
                 .stream()
-                .map(end -> new EnderecoID(end.getId().getEndereco()))
+                .map(end -> new Endereco(
+                        new EnderecoID(end.getId().getEndereco()),
+                        end.endereco().getEndTipoLogradouro(),
+                        end.endereco().getEndLogradouro(),
+                        end.endereco().getEndNumero(),
+                        end.endereco().getEndBairro(),
+                        CidadeMapper.INSTANCE.cidadeJpaEntityToCidade(end.endereco().getCidade())
+                ))
+                .collect(Collectors.toList());
+    }
+
+    default Set<Endereco> mapEnderecosId(List<PessoaEnderecoJpaEntity> enderecos){
+        return enderecos
+                .stream()
+                .map(end -> new Endereco(
+                        new EnderecoID(end.getId().getEndereco()),
+                        end.endereco().getEndTipoLogradouro(),
+                        end.endereco().getEndLogradouro(),
+                        end.endereco().getEndNumero(),
+                        end.endereco().getEndBairro(),
+                        CidadeMapper.INSTANCE.cidadeJpaEntityToCidade(end.endereco().getCidade())
+                ))
                 .collect(Collectors.toSet());
     }
 
-    default Set<PessoaEnderecoJpaEntity> mapEnderecos(Set<EnderecoID> enderecos, PessoaJpaEntity pessoa) {
+    default Set<PessoaEnderecoJpaEntity> mapEnderecos(List<Endereco> enderecos, PessoaJpaEntity pessoa) {
         Set<PessoaEnderecoJpaEntity> pesEnderecos = new HashSet<>();
+
         if (enderecos != null) {
-            for (EnderecoID enderecoId : enderecos) {
-                // Definindo o ID do endereço
+            for (Endereco endereco : enderecos) {
                 PessoaEnderecoJpaEntity pessoaEndereco = new PessoaEnderecoJpaEntity();
                 pessoaEndereco.setPessoa(pessoa);
+                pessoaEndereco.setEndereco(EnderecoMapper.INSTANCE.enderecoToEnderecoJpaEntity(endereco));
 
                 PessoaEnderecoJpaEntityId pessoaEnderecoJpaEntityId = new PessoaEnderecoJpaEntityId();
-                pessoaEnderecoJpaEntityId.setEndereco(enderecoId.value());
                 pessoaEnderecoJpaEntityId.setPessoa(pessoa.getPesId());
+                pessoaEnderecoJpaEntityId.setEndereco(endereco.id().value());
 
                 pessoaEndereco.setId(pessoaEnderecoJpaEntityId);
+
                 pesEnderecos.add(pessoaEndereco);
             }
         }
+
         return pesEnderecos;
     }
 
