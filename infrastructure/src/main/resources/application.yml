@@ -55,3 +55,9 @@ springdoc:
   swagger-ui:
     operations-sorter: alpha
     tags-sorter: alpha
+
+application:
+  titulo: API Seletivo
+  autor: Eduardo Roosevelt de Oliveira Silva
+  minio: Console minio - http://localhost:9001
+  swagger: Endereco do Swagger - http://localhost:8083/apiseletivo/swagger-ui/index.html#/

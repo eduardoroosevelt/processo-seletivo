@@ -5,6 +5,7 @@ import br.com.eduardosilva.domain.endereco.Endereco;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
 import br.com.eduardosilva.domain.unidade.UnidadeId;
 
+import java.util.List;
 import java.util.Set;
 
 public abstract class BuscarUnidadePorIdUseCase extends UseCase<BuscarUnidadePorIdUseCase.Input,BuscarUnidadePorIdUseCase.Output> {
@@ -17,6 +18,6 @@ public abstract class BuscarUnidadePorIdUseCase extends UseCase<BuscarUnidadePor
         UnidadeId unidadeId();
         String nome();
         String sigla();
-        Set<EnderecoID> endereco();
+        List<Endereco> endereco();
     }
 }

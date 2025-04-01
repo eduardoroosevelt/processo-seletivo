@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 import java.util.Objects;
 
-@RestController
+
 public class EnderecoController implements EnderecoAPI {
 
     private final CreateEnderecoUseCase createEnderecoUseCase;

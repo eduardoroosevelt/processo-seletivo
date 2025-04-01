@@ -11,6 +11,7 @@ import br.com.eduardosilva.domain.exceptions.NotFoundException;
 import br.com.eduardosilva.domain.pessoa.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class DefaultBuscarPessoaPorIdUseCase extends BuscarPessoaPorIdUseCase {
             String pesPai,
             ServidorTemporario servidorTemp,
             ServidorEfetivo servidorEfetivo,
-            Set<EnderecoID> enderecos,
+            List<Endereco> enderecos,
             Set<String> fotos
     ) implements BuscarPessoaPorIdUseCase.Output{
 
@@ -56,7 +57,7 @@ public class DefaultBuscarPessoaPorIdUseCase extends BuscarPessoaPorIdUseCase {
                   pessoa.getPesPai(),
                   pessoa.getServidorTemporario(),
                   pessoa.getServidorEfetivo(),
-                  pessoa.getEnderecos().stream().map(Entity::id).collect(Collectors.toSet()),
+                  pessoa.getEnderecos(),
                   pessoa.getFotos()
                           .stream()
                           .map(f->mediaResourceGateway.generateTemporaryLink(f.getFpBucket()))

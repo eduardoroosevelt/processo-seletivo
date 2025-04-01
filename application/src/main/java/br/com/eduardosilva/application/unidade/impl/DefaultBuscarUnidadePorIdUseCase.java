@@ -10,6 +10,7 @@ import br.com.eduardosilva.domain.unidade.Unidade;
 import br.com.eduardosilva.domain.unidade.UnidadeGateway;
 import br.com.eduardosilva.domain.unidade.UnidadeId;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,14 +38,14 @@ public class DefaultBuscarUnidadePorIdUseCase extends BuscarUnidadePorIdUseCase 
             UnidadeId unidadeId,
             String nome,
             String sigla,
-            Set<EnderecoID> endereco
+            List<Endereco> endereco
     ) implements BuscarUnidadePorIdUseCase.Output{
         public StdOutput(Unidade out){
             this(
                     out.id(),
                     out.getNome(),
                     out.getSigla(),
-                    out.getEnderecos().stream().map(Entity::id).collect(Collectors.toSet())
+                    out.getEnderecos()
             );
         }
     }

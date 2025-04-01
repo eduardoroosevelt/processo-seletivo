@@ -3,6 +3,7 @@ package br.com.eduardosilva.infrastructure.pessoa.presenters;
 import br.com.eduardosilva.application.endereco.BuscarEnderecoPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.domain.endereco.EnderecoID;
+import br.com.eduardosilva.infrastructure.cidade.models.CidadeResponse;
 import br.com.eduardosilva.infrastructure.endereco.models.EnderecoResponse;
 import br.com.eduardosilva.infrastructure.pessoa.models.BuscarPessoaPorIdResponse;
 
@@ -19,7 +20,18 @@ public interface PessoaApiPresenter {
                 out.pesPai(),
                 out.servidorTemp(),
                 out.servidorEfetivo(),
-                out.enderecos().stream().map(EnderecoID::value).collect(Collectors.toSet()),
+                out.enderecos().stream().map(e -> new EnderecoResponse(
+                                e.id().value(),
+                                e.getEndTipoLogradouro(),
+                                e.getEndLogradouro(),
+                                e.getEndNumero(),
+                                e.getEndBairro(),
+                                new CidadeResponse(
+                                        e.getCidade().id().value(),
+                                        e.getCidade().getNome(),
+                                        e.getCidade().getUf()
+                                )
+                        )).toList(),
                 out.fotos()
         );
     } 
