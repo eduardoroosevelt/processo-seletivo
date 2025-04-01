@@ -12,4 +12,6 @@ public interface PessoaGateway {
     Optional<Pessoa> pessoaOfId(PessoaId pessoaId);
     Pagination<ServidorEfetivoPorUnidadeIdPreview> findServidoresEfetivosByUnidade(ServidorEfetivoPorUnidadeIdSearchQuery search);
     Pagination<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(EnderecoFuncionalPorNomeServidorSearch search);
+
+    void delete(PessoaId id);
 }

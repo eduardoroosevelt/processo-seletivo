@@ -121,5 +121,13 @@ public class PessoaPostgresGateway implements PessoaGateway {
         );
     }
 
+    @Override
+    public void delete(PessoaId pessoaId) {
+        final var aPessoaId = pessoaId.value();
+        if (this.pessoaRepository.existsById(aPessoaId)) {
+            this.pessoaRepository.deleteById(aPessoaId);
+        }
+    }
+
 
 }

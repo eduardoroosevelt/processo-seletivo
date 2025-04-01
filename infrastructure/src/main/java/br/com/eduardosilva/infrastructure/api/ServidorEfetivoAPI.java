@@ -1,16 +1,11 @@
 package br.com.eduardosilva.infrastructure.api;
 
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarServidorEfetivoPorUnidadeId;
-import br.com.eduardosilva.domain.Pagination;
-import br.com.eduardosilva.domain.endereco.EnderecoPreview;
-import br.com.eduardosilva.domain.pessoa.EnderecoFuncionalPorNomeServidorPreview;
-import br.com.eduardosilva.domain.pessoa.ServidorEfetivoPorUnidadeIdPreview;
-import br.com.eduardosilva.infrastructure.endereco.models.EnderecoResponse;
 import br.com.eduardosilva.infrastructure.pessoa.models.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,34 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RequestMapping(value = "servidor")
-@Tag(name = "Servidor")
-public interface ServidorAPI {
+@RequestMapping(value = "servidor-efetivo")
+@Tag(name = "Servidor Efetivo")
+public interface ServidorEfetivoAPI {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            value = "efetivo"
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @Operation(summary = "Criar novo servidor efetivo sem as fotos")
+    @Operation(summary = "Criar novo servidor efetivo")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created successfully"),
             @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     ResponseEntity<?> createPessoa(@RequestBody CreateServidorEfetivoRequest input);
-
-    @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            value = "temporario"
-    )
-    @Operation(summary = "Criar novo servidor temporario sem as fotos")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created successfully"),
-            @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
-            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
-    })
-    ResponseEntity<?> createServidorTemporario(@RequestBody CreateServidorTemporarioRequest input);
 
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -64,7 +45,7 @@ public interface ServidorAPI {
 
 
     @PutMapping(
-            value = "efetivo/{id}",
+            value = "{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -76,19 +57,15 @@ public interface ServidorAPI {
     })
     ResponseEntity<?> updateById(@PathVariable(name = "id") Long id, @RequestBody UpdateServidorEfetivoRequest input);
 
-    @PutMapping(
-            value = "temporario/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @Operation(summary = "Update a Servidor efetivo by it's identifier")
+
+    @DeleteMapping(value = "{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Deletar um Servidor Temporário pelo identificador")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Servidor efetivo updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Servidor efetivo was not found"),
+            @ApiResponse(responseCode = "204", description = "Servidor Temporário deletado"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
-    ResponseEntity<?> updateByTemporarioId(@PathVariable(name = "id") Long id, @RequestBody UpdateServidorTemporarioRequest input);
-
+    void deleteById(@PathVariable(name = "id") Long id);
     @GetMapping(
             value = "{id}",
             produces = MediaType.APPLICATION_JSON_VALUE

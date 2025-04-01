@@ -34,10 +34,10 @@ public class PessoaJpaEntity {
     @Column(name = "pes_pai", length = 200, nullable = false)
     private String pesPai;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     private ServidorEfetivoJpaEntity servidorEfetivoJpaEntity;
 
-    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     private ServidorTemporarioJpaEntity servidorTemporarioJpaEntity;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)

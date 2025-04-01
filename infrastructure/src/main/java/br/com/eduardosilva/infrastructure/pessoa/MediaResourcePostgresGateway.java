@@ -39,6 +39,12 @@ public class MediaResourcePostgresGateway implements MediaResourceGateway {
         return storageService.generateTemporaryLink(id);
     }
 
+    @Override
+    public void clearResources(PessoaId pessoaId) {
+        final var ids = this.storageService.list(folder(pessoaId));
+        this.storageService.deleteAll(ids);
+    }
+
     private String folder(final PessoaId anId) {
         return locationPattern.replace("{pessoaId}", anId.value().toString());
     }

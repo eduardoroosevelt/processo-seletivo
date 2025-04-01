@@ -5,6 +5,7 @@ import br.com.eduardosilva.domain.pessoa.PessoaId;
 import br.com.eduardosilva.domain.unidade.UnidadeId;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface LotacaoGateway {
@@ -16,4 +17,5 @@ public interface LotacaoGateway {
     void delete(LotacaoId lotacaoId);
 
     Optional<Lotacao> existeLotacao(PessoaId pesId, UnidadeId unidId, LocalDate lotDataLotacao, LocalDate lotDataRemocao, String lotPortaria);
+    Boolean existeLotacaoPorPesId(PessoaId pesId);
 }

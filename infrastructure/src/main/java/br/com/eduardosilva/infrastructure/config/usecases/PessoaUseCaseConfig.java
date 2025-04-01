@@ -4,20 +4,17 @@ import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.UploadFotoUseCase;
 import br.com.eduardosilva.application.pessoa.impl.DefaultBuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.impl.DefaultUploadFotoUseCase;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarEnderecoByNomeServidorUseCase;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarServidorEfetivoPorUnidadeId;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.UpdateServidorEfetivoUseCase;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultBuscarEnderecoByNomeServidorUseCase;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultBuscarServidorEfetivoPorUnidadeId;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultCreateServidorEfetivoUseCase;
-import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.DefaultUpdateServidorEfetivoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.*;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.*;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.DeleteServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultCreateServidorTemporarioUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultDeleteServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultUpdateServidorTemporarioUseCase;
 import br.com.eduardosilva.domain.cidade.CidadeGateway;
 import br.com.eduardosilva.domain.endereco.EnderecoGateway;
+import br.com.eduardosilva.domain.lotacao.LotacaoGateway;
 import br.com.eduardosilva.domain.pessoa.MediaResourceGateway;
 import br.com.eduardosilva.domain.pessoa.PessoaGateway;
 import org.springframework.context.annotation.Bean;
@@ -29,12 +26,18 @@ public class PessoaUseCaseConfig {
     private final EnderecoGateway enderecoGateway;
     private final MediaResourceGateway mediaResourceGateway;
     private final CidadeGateway cidadeGateway;
+    private final LotacaoGateway lotacaoGateway;
 
-    public PessoaUseCaseConfig(PessoaGateway pessoaGateway, EnderecoGateway enderecoGateway, MediaResourceGateway mediaResourceGateway, CidadeGateway cidadeGateway) {
+    public PessoaUseCaseConfig(PessoaGateway pessoaGateway,
+                               EnderecoGateway enderecoGateway,
+                               MediaResourceGateway mediaResourceGateway,
+                               CidadeGateway cidadeGateway,
+                               LotacaoGateway lotacaoGateway) {
         this.pessoaGateway = pessoaGateway;
         this.enderecoGateway = enderecoGateway;
         this.mediaResourceGateway = mediaResourceGateway;
         this.cidadeGateway = cidadeGateway;
+        this.lotacaoGateway = lotacaoGateway;
     }
 
     @Bean
@@ -75,5 +78,15 @@ public class PessoaUseCaseConfig {
     @Bean
     public BuscarEnderecoByNomeServidorUseCase buscarEnderecoByNomeServidorUseCase(){
         return  new DefaultBuscarEnderecoByNomeServidorUseCase(pessoaGateway);
+    }
+
+    @Bean
+    public DeleteServidorTemporarioUseCase deleteServidorTemporarioUseCase(){
+        return new DefaultDeleteServidorTemporarioUseCase(pessoaGateway);
+    }
+
+    @Bean
+    public DeleteServidorEfetivoUseCase deleteServidorEfetivoUseCase(){
+        return new DefeultDeleteServidorEfetivoUseCase(pessoaGateway,mediaResourceGateway,lotacaoGateway);
     }
 }

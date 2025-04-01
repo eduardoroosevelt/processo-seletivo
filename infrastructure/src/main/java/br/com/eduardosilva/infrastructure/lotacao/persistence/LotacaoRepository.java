@@ -41,4 +41,6 @@ public interface LotacaoRepository extends JpaRepository<LotacaoJpaEntity, Long>
                     and UPPER(l.lotPortaria) = UPPER(:lotPortaria)
             """)
     Optional<LotacaoJpaEntity> existeLotacao(Long pesId, Long uniId, LocalDate lotDataLotacao, LocalDate lotDataRemocao, String lotPortaria);
+
+    Boolean existsByPessoa_PesId(Long value);
 }

@@ -85,4 +85,9 @@ public class LotacaoPostgresGateway implements LotacaoGateway {
                 SqlUtils.upper(lotPortaria)
         ).map(LotacaoMapper.INSTANCE::lotacaJpaEntityToLotacao);
     }
+
+    @Override
+    public Boolean existeLotacaoPorPesId(PessoaId pesId) {
+        return this.lotacaoRepository.existsByPessoa_PesId(pesId.value());
+    }
 }
