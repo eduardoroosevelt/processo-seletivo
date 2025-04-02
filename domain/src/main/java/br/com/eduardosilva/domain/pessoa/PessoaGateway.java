@@ -18,4 +18,6 @@ public interface PessoaGateway {
     Pagination<ServidorTemporarioPreview> findAllServidorTemporario(ServidorTemporarioSearchQuery servidorTemporarioSearchQuery);
 
     Pagination<ServidorEfetivoPreview> findAllServidorEfetivo(ServidorEfetivoSearchQuery servidorEfetivoSearchQuery);
+
+    Optional<Pessoa> findByServidorEfetivoMatricula(String matricula);
 }

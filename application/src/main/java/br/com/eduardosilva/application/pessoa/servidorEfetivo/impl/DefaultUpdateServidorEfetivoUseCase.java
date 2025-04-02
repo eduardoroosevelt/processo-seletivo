@@ -34,6 +34,15 @@ public class DefaultUpdateServidorEfetivoUseCase extends UpdateServidorEfetivoUs
     @Override
     public Output execute(Input input) {
 
+        this.pessoaGateway.findByServidorEfetivoMatricula(input.matricula())
+                .ifPresent(p -> {
+                    if( !p.id().value().equals(input.pesId())){
+                        throw DomainException.with("Matrícula %s já cadastrada para a pessoa %s".formatted(input.matricula(), p.getPesNome()));
+                    }
+
+                });
+
+
         final Pessoa aPessoa = this.pessoaGateway.pessoaOfId(new PessoaId(input.pesId()))
                 .orElseThrow(() -> NotFoundException.with("Pessoa com id %s não pode ser encontrado".formatted(input.pesId())));
 

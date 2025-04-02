@@ -100,4 +100,7 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
                 (:matricula is null or se.matricula like concat('%',:matricula,'%'))
             """)
     Page<ServidorEfetivoPreview> findAllServidorEfetivo(String nome, String matricula, PageRequest page);
+
+
+    Optional<PessoaJpaEntity> findByServidorEfetivoJpaEntityMatricula(String matricula);
 }

@@ -39,6 +39,11 @@ public class DefaultCreateServidorEfetivoUseCase extends CreateServidorEfetivoUs
                 input.pesDataNascimento()
         );
 
+        servidorEfetivoGateway.findByServidorEfetivoMatricula(input.matricula())
+                .ifPresent(p -> {
+                    throw DomainException.with("Matrícula %s já cadastrada para a pessoa %s".formatted(input.matricula(), p.getPesNome()));
+                });
+
         List<Endereco> enderecos= input.enderecos().stream().map(er -> {
                 Cidade cidade = cidadeGateway.cidadeOfId(new CidadeId(er.cidadeId()))
                         .orElseThrow(() -> DomainException.with("Cidade com id %s não pode ser encontrado".formatted(er.cidadeId())));

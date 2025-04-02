@@ -172,5 +172,12 @@ public class PessoaPostgresGateway implements PessoaGateway {
         );
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Pessoa> findByServidorEfetivoMatricula(String matricula) {
+        return this.pessoaRepository.findByServidorEfetivoJpaEntityMatricula(matricula)
+                .map(PessoaMapper.INSTANCE::pessoaJpaEntityToPessoa);
+    }
+
 
 }
