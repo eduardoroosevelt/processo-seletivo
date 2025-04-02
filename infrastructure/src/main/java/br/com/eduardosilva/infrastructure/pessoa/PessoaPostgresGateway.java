@@ -1,9 +1,11 @@
 package br.com.eduardosilva.infrastructure.pessoa;
 
 import br.com.eduardosilva.domain.Pagination;
+import br.com.eduardosilva.domain.lotacao.LotacaoPreview;
 import br.com.eduardosilva.domain.pessoa.*;
 import br.com.eduardosilva.infrastructure.mapper.*;
 import br.com.eduardosilva.infrastructure.pessoa.persistence.*;
+import br.com.eduardosilva.infrastructure.util.SqlUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -127,6 +129,47 @@ public class PessoaPostgresGateway implements PessoaGateway {
         if (this.pessoaRepository.existsById(aPessoaId)) {
             this.pessoaRepository.deleteById(aPessoaId);
         }
+    }
+
+    @Override
+    public Pagination<ServidorTemporarioPreview> findAllServidorTemporario(ServidorTemporarioSearchQuery search) {
+        final var page = PageRequest.of(
+                search.page(),
+                search.perPage()
+        );
+
+        final Page<ServidorTemporarioPreview> actualPage = this.pessoaRepository.findAllServidorTemporario(
+                SqlUtils.upper(search.nome()),
+                search.stDataDemissao(),
+                search.stDataAdmissao(),
+                page
+        );
+        return  new Pagination<>(
+                actualPage.getNumber(),
+                actualPage.getSize(),
+                actualPage.getTotalElements(),
+                actualPage.toList()
+        );
+    }
+
+    @Override
+    public Pagination<ServidorEfetivoPreview> findAllServidorEfetivo(ServidorEfetivoSearchQuery search) {
+        final var page = PageRequest.of(
+                search.page(),
+                search.perPage()
+        );
+
+        final Page<ServidorEfetivoPreview> actualPage = this.pessoaRepository.findAllServidorEfetivo(
+                SqlUtils.upper(search.nome()),
+                search.matricula(),
+                page
+        );
+        return  new Pagination<>(
+                actualPage.getNumber(),
+                actualPage.getSize(),
+                actualPage.getTotalElements(),
+                actualPage.toList()
+        );
     }
 
 

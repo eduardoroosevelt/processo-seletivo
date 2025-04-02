@@ -2,10 +2,14 @@ package br.com.eduardosilva.infrastructure.api.controllers;
 
 import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.UploadFotoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.BuscarServidorTemporarioPaginadoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.DeleteServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
+import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.pessoa.ServidorTemporarioPreview;
+import br.com.eduardosilva.domain.pessoa.ServidorTemporarioSearchQuery;
 import br.com.eduardosilva.domain.shared.Resource;
 import br.com.eduardosilva.infrastructure.api.ServidorTemporarioAPI;
 import br.com.eduardosilva.infrastructure.pessoa.models.*;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -29,18 +34,21 @@ public class ServidorTemporarioController implements ServidorTemporarioAPI {
     private final BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase;
     private final DeleteServidorTemporarioUseCase deleteServidorTemporarioUseCase;
     private final UploadFotoUseCase uploadFotoUseCase;
+    private final BuscarServidorTemporarioPaginadoUseCase buscarServidorTemporarioPaginadoUseCase;
 
     public ServidorTemporarioController(CreateServidorTemporarioUseCase createServidorTemporarioUseCase,
                                         UpdateServidorTemporarioUseCase updateServidorTemporarioUseCase,
                                         BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase,
                                         DeleteServidorTemporarioUseCase deleteServidorTemporarioUseCase,
-                                        UploadFotoUseCase uploadFotoUseCase) {
+                                        UploadFotoUseCase uploadFotoUseCase,
+                                        BuscarServidorTemporarioPaginadoUseCase buscarServidorTemporarioPaginadoUseCase) {
 
         this.createServidorTemporarioUseCase = createServidorTemporarioUseCase;
         this.updateServidorTemporarioUseCase = updateServidorTemporarioUseCase;
         this.buscarPessoaPorIdUseCase = buscarPessoaPorIdUseCase;
         this.deleteServidorTemporarioUseCase = deleteServidorTemporarioUseCase;
         this.uploadFotoUseCase = uploadFotoUseCase;
+        this.buscarServidorTemporarioPaginadoUseCase = buscarServidorTemporarioPaginadoUseCase;
     }
 
     @Override
@@ -93,6 +101,12 @@ public class ServidorTemporarioController implements ServidorTemporarioAPI {
         };
         final var links = uploadFotoUseCase.execute(input);
         return  ResponseEntity.ok().body(links);
+    }
+
+    @Override
+    public Pagination<ServidorTemporarioPreview> list(int page, int perPage, LocalDate stDataAdmissao, LocalDate stDataDemissao, String nome) {
+        final var parm = new ServidorTemporarioSearchQuery(page,perPage,stDataAdmissao,stDataDemissao,nome);
+        return buscarServidorTemporarioPaginadoUseCase.execute(parm);
     }
 
 

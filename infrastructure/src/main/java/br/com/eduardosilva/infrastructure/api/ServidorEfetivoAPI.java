@@ -1,5 +1,8 @@
 package br.com.eduardosilva.infrastructure.api;
 
+import br.com.eduardosilva.domain.Pagination;
+import br.com.eduardosilva.domain.lotacao.LotacaoPreview;
+import br.com.eduardosilva.domain.pessoa.ServidorEfetivoPreview;
 import br.com.eduardosilva.infrastructure.pessoa.models.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -78,5 +81,17 @@ public interface ServidorEfetivoAPI {
     })
     BuscarPessoaPorIdResponse getById(@PathVariable(name = "id") Long id);
 
-
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "buscar todos servidor efetivo paginado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "servidor efetivo listed"),
+            @ApiResponse(responseCode = "422", description = "A query param was invalid"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Pagination<ServidorEfetivoPreview> list(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "perPage", required = false, defaultValue = "10") int perPage,
+            @RequestParam(name = "matricula", required = false, defaultValue = "") String matricula,
+            @RequestParam(name = "nome", required = false, defaultValue = "") String nome
+    );
 }

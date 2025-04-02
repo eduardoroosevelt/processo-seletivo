@@ -1,6 +1,7 @@
 package br.com.eduardosilva.infrastructure.api;
 
-import br.com.eduardosilva.infrastructure.endereco.models.EnderecoResponse;
+import br.com.eduardosilva.domain.Pagination;
+import br.com.eduardosilva.domain.lotacao.LotacaoPreview;
 import br.com.eduardosilva.infrastructure.lotacao.models.CreateLotacaoRequest;
 import br.com.eduardosilva.infrastructure.lotacao.models.LotacaoResponse;
 import br.com.eduardosilva.infrastructure.lotacao.models.UpdateLotacaoRequest;
@@ -63,4 +64,18 @@ public interface LotacaoAPI {
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     void deleteById(@PathVariable(name = "id") Long id);
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "buscar todos lotação paginado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lotação listed"),
+            @ApiResponse(responseCode = "422", description = "A query param was invalid"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Pagination<LotacaoPreview> list(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "perPage", required = false, defaultValue = "10") int perPage,
+            @RequestParam(name = "lotPortaria", required = false, defaultValue = "") String lotPortaria,
+            @RequestParam(name = "unidadeId", required = false, defaultValue = "") Long unidId
+    );
 }

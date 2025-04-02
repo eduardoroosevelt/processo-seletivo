@@ -1,8 +1,6 @@
 package br.com.eduardosilva.infrastructure.pessoa.persistence;
 
-import br.com.eduardosilva.domain.pessoa.EnderecoFuncionalPorNomeServidorPreview;
-import br.com.eduardosilva.domain.pessoa.Pessoa;
-import br.com.eduardosilva.domain.pessoa.ServidorEfetivoPorUnidadeIdPreview;
+import br.com.eduardosilva.domain.pessoa.*;
 import br.com.eduardosilva.infrastructure.pessoa.models.ServidorEfetivoPorUnidadeIdCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -61,4 +59,45 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
                 WHERE p.pesNome LIKE concat('%', :nome  , '%') 
             """)
     Page<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(String nome, PageRequest page);
+
+    @Query("""
+            
+            SELECT 
+                new br.com.eduardosilva.domain.pessoa.ServidorTemporarioPreview(
+                    p.pesId,
+                    p.pesNome,
+                    p.pesDataNascimento,
+                    p.pesSexo,
+                    p.pesMae,
+                    p.pesPai,
+                    st.stDataAdmissao,
+                    st.stDataDemissao
+                )
+            FROM PessoaJpaEntity p
+            JOIN p.servidorTemporarioJpaEntity st
+            WHERE 
+                (:nome is null or p.pesNome LIKE concat('%', :nome  , '%')) and
+                (:stDataDemissao is null or st.stDataDemissao = :stDataDemissao) and
+                (:stDataAdmissao is null or st.stDataAdmissao = :stDataAdmissao)
+            """)
+    Page<ServidorTemporarioPreview> findAllServidorTemporario(String nome, LocalDate stDataDemissao, LocalDate stDataAdmissao, PageRequest page);
+
+    @Query("""
+            SELECT 
+                new br.com.eduardosilva.domain.pessoa.ServidorEfetivoPreview(
+                    p.pesId,
+                    p.pesNome,
+                    p.pesDataNascimento,
+                    p.pesSexo,
+                    p.pesMae,
+                    p.pesPai,
+                    se.matricula
+                )
+            FROM PessoaJpaEntity p
+            JOIN p.servidorEfetivoJpaEntity se
+            WHERE 
+                (:nome is null or p.pesNome LIKE concat('%', :nome  , '%')) and
+                (:matricula is null or se.matricula like concat('%',:matricula,'%'))
+            """)
+    Page<ServidorEfetivoPreview> findAllServidorEfetivo(String nome, String matricula, PageRequest page);
 }

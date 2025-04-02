@@ -6,9 +6,11 @@ import br.com.eduardosilva.application.pessoa.impl.DefaultBuscarPessoaPorIdUseCa
 import br.com.eduardosilva.application.pessoa.impl.DefaultUploadFotoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.*;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.impl.*;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.BuscarServidorTemporarioPaginadoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.DeleteServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
+import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultBuscarServidorTemporarioPaginadoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultCreateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultDeleteServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.impl.DefaultUpdateServidorTemporarioUseCase;
@@ -88,5 +90,15 @@ public class PessoaUseCaseConfig {
     @Bean
     public DeleteServidorEfetivoUseCase deleteServidorEfetivoUseCase(){
         return new DefeultDeleteServidorEfetivoUseCase(pessoaGateway,mediaResourceGateway,lotacaoGateway);
+    }
+
+    @Bean
+    public BuscarServidorEfetivoPaginadoUseCase buscarServidorEfetivoPaginadoUseCase(){
+        return new DefaultBuscarServidorEfetivoPaginadoUseCase(pessoaGateway);
+    }
+
+    @Bean
+    public BuscarServidorTemporarioPaginadoUseCase buscarServidorTemporarioPaginadoUseCase(){
+        return new DefaultBuscarServidorTemporarioPaginadoUseCase(pessoaGateway);
     }
 }

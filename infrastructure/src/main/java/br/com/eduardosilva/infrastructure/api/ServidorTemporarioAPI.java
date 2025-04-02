@@ -1,5 +1,8 @@
 package br.com.eduardosilva.infrastructure.api;
 
+import br.com.eduardosilva.domain.Pagination;
+import br.com.eduardosilva.domain.pessoa.ServidorEfetivoPreview;
+import br.com.eduardosilva.domain.pessoa.ServidorTemporarioPreview;
 import br.com.eduardosilva.infrastructure.pessoa.models.BuscarPessoaPorIdResponse;
 import br.com.eduardosilva.infrastructure.pessoa.models.CreateServidorTemporarioRequest;
 import br.com.eduardosilva.infrastructure.pessoa.models.UpdateServidorTemporarioRequest;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequestMapping(value = "servidor-temporario")
@@ -82,5 +86,20 @@ public interface ServidorTemporarioAPI {
     ResponseEntity<?> upload(
             @RequestParam(name = "pesId", required = false) Long pesId,
             @RequestParam(name = "fotos", required = false) List<MultipartFile> fotos
+    );
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "buscar todos servidor temporário paginado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "servidor temporário listed"),
+            @ApiResponse(responseCode = "422", description = "A query param was invalid"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Pagination<ServidorTemporarioPreview> list(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "perPage", required = false, defaultValue = "10") int perPage,
+            @RequestParam(name = "stDataAdmissao", required = false, defaultValue = "") LocalDate stDataAdmissao,
+            @RequestParam(name = "stDataDemissao", required = false, defaultValue = "") LocalDate stDataDemissao,
+            @RequestParam(name = "nome", required = false, defaultValue = "") String nome
     );
 }

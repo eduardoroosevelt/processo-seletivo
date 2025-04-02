@@ -2,12 +2,16 @@ package br.com.eduardosilva.infrastructure.api.controllers;
 
 import br.com.eduardosilva.application.pessoa.BuscarPessoaPorIdUseCase;
 import br.com.eduardosilva.application.pessoa.UploadFotoUseCase;
+import br.com.eduardosilva.application.pessoa.servidorEfetivo.BuscarServidorEfetivoPaginadoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.CreateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.DeleteServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorEfetivo.UpdateServidorEfetivoUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.CreateServidorTemporarioUseCase;
 import br.com.eduardosilva.application.pessoa.servidorTemporario.UpdateServidorTemporarioUseCase;
+import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.pessoa.ServidorEfetivoPreview;
+import br.com.eduardosilva.domain.pessoa.ServidorEfetivoSearchQuery;
 import br.com.eduardosilva.domain.shared.Resource;
 import br.com.eduardosilva.infrastructure.api.ServidorEfetivoAPI;
 import br.com.eduardosilva.infrastructure.pessoa.models.*;
@@ -31,20 +35,22 @@ public class ServidorEfetivoController implements ServidorEfetivoAPI {
     private final UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase;
     private final BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase;
     private final DeleteServidorEfetivoUseCase deleteServidorEfetivoUseCase;
-
+    private final BuscarServidorEfetivoPaginadoUseCase buscarServidorEfetivoPaginadoUseCase;
 
     public ServidorEfetivoController(
             CreateServidorEfetivoUseCase createServidorEfetivoUseCase,
             UploadFotoUseCase uploadFotoUseCase,
             UpdateServidorEfetivoUseCase updateServidorEfetivoUseCase,
             BuscarPessoaPorIdUseCase buscarPessoaPorIdUseCase,
-            DeleteServidorEfetivoUseCase deleteServidorEfetivoUseCase
+            DeleteServidorEfetivoUseCase deleteServidorEfetivoUseCase,
+            BuscarServidorEfetivoPaginadoUseCase buscarServidorEfetivoPaginadoUseCase
     ) {
         this.createServidorEfetivoUseCase = createServidorEfetivoUseCase;
         this.uploadFotoUseCase = uploadFotoUseCase;
         this.updateServidorEfetivoUseCase = updateServidorEfetivoUseCase;
         this.buscarPessoaPorIdUseCase = buscarPessoaPorIdUseCase;
         this.deleteServidorEfetivoUseCase = deleteServidorEfetivoUseCase;
+        this.buscarServidorEfetivoPaginadoUseCase = buscarServidorEfetivoPaginadoUseCase;
     }
 
     @Override
@@ -102,6 +108,11 @@ public class ServidorEfetivoController implements ServidorEfetivoAPI {
         return PessoaApiPresenter.present(this.buscarPessoaPorIdUseCase.execute(aInput));
     }
 
+    @Override
+    public Pagination<ServidorEfetivoPreview> list(int page, int perPage, String matricula, String nome) {
+        final var parm = new ServidorEfetivoSearchQuery(page,perPage,nome,matricula );
+        return buscarServidorEfetivoPaginadoUseCase.execute(parm);
+    }
 
 
     private Resource resourceOf(final MultipartFile part) {

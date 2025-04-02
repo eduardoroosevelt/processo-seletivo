@@ -1,10 +1,11 @@
 package br.com.eduardosilva.infrastructure.api.controllers;
 
-import br.com.eduardosilva.application.lotacao.BuscarLotacaoPorIdUseCase;
-import br.com.eduardosilva.application.lotacao.CreateLotacaoUseCase;
-import br.com.eduardosilva.application.lotacao.DeleteLotacaoUseCase;
-import br.com.eduardosilva.application.lotacao.UpdateLotacaoUseCase;
+import br.com.eduardosilva.application.lotacao.*;
+import br.com.eduardosilva.domain.Pagination;
 import br.com.eduardosilva.domain.exceptions.DomainException;
+import br.com.eduardosilva.domain.lotacao.LotacaoPreview;
+import br.com.eduardosilva.domain.lotacao.LotacaoSearchQuery;
+import br.com.eduardosilva.domain.unidade.UnidadeId;
 import br.com.eduardosilva.infrastructure.api.LotacaoAPI;
 import br.com.eduardosilva.infrastructure.lotacao.models.*;
 import br.com.eduardosilva.infrastructure.lotacao.presenters.LotacaoApiPresenter;
@@ -21,15 +22,20 @@ public class LotacaController implements LotacaoAPI {
     private final UpdateLotacaoUseCase updateLotacaoUseCase;
     private final BuscarLotacaoPorIdUseCase buscarLotacaoPorIdUseCase;
     private final DeleteLotacaoUseCase deleteLotacaoUseCase;
+    private final BuscarLotacaoPaginadoUseCase buscarLotacaoPaginadoUseCase;
 
     public LotacaController(
             CreateLotacaoUseCase createLotacaoUseCase,
-            UpdateLotacaoUseCase updateLotacaoUseCase, BuscarLotacaoPorIdUseCase buscarLotacaoPorIdUseCase, DeleteLotacaoUseCase deleteLotacaoUseCase
+            UpdateLotacaoUseCase updateLotacaoUseCase,
+            BuscarLotacaoPorIdUseCase buscarLotacaoPorIdUseCase,
+            DeleteLotacaoUseCase deleteLotacaoUseCase,
+            BuscarLotacaoPaginadoUseCase buscarLotacaoPaginadoUseCase
     ) {
         this.createLotacaoUseCase = createLotacaoUseCase;
         this.updateLotacaoUseCase = updateLotacaoUseCase;
         this.buscarLotacaoPorIdUseCase = buscarLotacaoPorIdUseCase;
         this.deleteLotacaoUseCase = deleteLotacaoUseCase;
+        this.buscarLotacaoPaginadoUseCase = buscarLotacaoPaginadoUseCase;
     }
 
     @Override
@@ -63,6 +69,12 @@ public class LotacaController implements LotacaoAPI {
     @Override
     public void deleteById(Long id) {
         this.deleteLotacaoUseCase.execute(id);
+    }
+
+    @Override
+    public Pagination<LotacaoPreview> list(int page, int perPage, String lotPortaria, Long unidId) {
+        final var parm = new LotacaoSearchQuery(page,perPage,lotPortaria, new UnidadeId(unidId));
+        return buscarLotacaoPaginadoUseCase.execute(parm);
     }
 
 }

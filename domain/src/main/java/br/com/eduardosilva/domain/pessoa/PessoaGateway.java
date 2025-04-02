@@ -14,4 +14,8 @@ public interface PessoaGateway {
     Pagination<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(EnderecoFuncionalPorNomeServidorSearch search);
 
     void delete(PessoaId id);
+
+    Pagination<ServidorTemporarioPreview> findAllServidorTemporario(ServidorTemporarioSearchQuery servidorTemporarioSearchQuery);
+
+    Pagination<ServidorEfetivoPreview> findAllServidorEfetivo(ServidorEfetivoSearchQuery servidorEfetivoSearchQuery);
 }
