@@ -17,9 +17,9 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
             select p
             from PessoaJpaEntity p
             where
-                p.pesNome = :nome and
-                p.pesPai = :paiNome and
-                p.pesMae = :maeNome and
+                UPPER(p.pesNome) = :nome and
+                UPPER(p.pesPai) = :paiNome and
+                UPPER(p.pesMae) = :maeNome and
                 p.pesDataNascimento = :dtNascimento
         """)
     Optional<PessoaJpaEntity> existePessoa(String nome, String paiNome, String maeNome, LocalDate dtNascimento);
@@ -56,7 +56,7 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
                     JOIN u.enderecos ue 
                     JOIN EnderecoJpaEntity e on ue.id.endereco = e.id
                     JOIN e.cidade c 
-                WHERE p.pesNome LIKE concat('%', :nome  , '%') 
+                WHERE UPPER(p.pesNome) LIKE concat('%', :nome  , '%') 
             """)
     Page<EnderecoFuncionalPorNomeServidorPreview> findEnderecoByNomeServidor(String nome, PageRequest page);
 
@@ -76,7 +76,7 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
             FROM PessoaJpaEntity p
             JOIN p.servidorTemporarioJpaEntity st
             WHERE 
-                (:nome is null or p.pesNome LIKE concat('%', :nome  , '%')) and
+                (:nome is null or UPPER(p.pesNome) LIKE concat('%', :nome  , '%')) and
                 (:stDataDemissao is null or st.stDataDemissao = :stDataDemissao) and
                 (:stDataAdmissao is null or st.stDataAdmissao = :stDataAdmissao)
             """)
@@ -96,7 +96,7 @@ public interface PessoaRepository extends JpaRepository<PessoaJpaEntity,Long> {
             FROM PessoaJpaEntity p
             JOIN p.servidorEfetivoJpaEntity se
             WHERE 
-                (:nome is null or p.pesNome LIKE concat('%', :nome  , '%')) and
+                (:nome is null or UPPER(p.pesNome) LIKE concat('%', :nome  , '%')) and
                 (:matricula is null or se.matricula like concat('%',:matricula,'%'))
             """)
     Page<ServidorEfetivoPreview> findAllServidorEfetivo(String nome, String matricula, PageRequest page);

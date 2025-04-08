@@ -34,7 +34,7 @@ public class PessoaPostgresGateway implements PessoaGateway {
     @Transactional(readOnly = true)
     public Optional<Pessoa> existePessoa(String nome, String paiNome, String maeNome, LocalDate dtNascimento) {
         return pessoaRepository
-                .existePessoa(nome, paiNome, maeNome, dtNascimento)
+                .existePessoa(SqlUtils.upper(nome), SqlUtils.upper(paiNome), SqlUtils.upper(maeNome), dtNascimento)
                 .map(PessoaMapper.INSTANCE::pessoaJpaEntityToPessoa);
     }
 
@@ -112,7 +112,9 @@ public class PessoaPostgresGateway implements PessoaGateway {
                 search.perPage()
         );
 
-        final Page<EnderecoFuncionalPorNomeServidorPreview> actualPage = this.pessoaRepository.findEnderecoByNomeServidor(search.nomeParte(),page);
+        final Page<EnderecoFuncionalPorNomeServidorPreview> actualPage = this.pessoaRepository.findEnderecoByNomeServidor(
+                SqlUtils.upper(search.nomeParte()),
+                page);
 
 
         return new Pagination<>(

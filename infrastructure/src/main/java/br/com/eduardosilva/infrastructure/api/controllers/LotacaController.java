@@ -73,7 +73,7 @@ public class LotacaController implements LotacaoAPI {
 
     @Override
     public Pagination<LotacaoPreview> list(int page, int perPage, String lotPortaria, Long unidId) {
-        final var parm = new LotacaoSearchQuery(page,perPage,lotPortaria, new UnidadeId(unidId));
+        final var parm = new LotacaoSearchQuery(page,perPage,lotPortaria, unidId != null ? new UnidadeId(unidId): UnidadeId.empty());
         return buscarLotacaoPaginadoUseCase.execute(parm);
     }
 
